@@ -1,7 +1,8 @@
-const Tipo = require('../models/Tipos')
-const validator = require('express-validator')
+const express = require("express");
+const Tipo = require('../models/Tipo');
+const validator = require('express-validator');
 
-const router = express.Router()
+const router = express.Router();
 
 router.post('/', [
   validator.check('nombre', 'nombre invalido').not().isEmpty(),
