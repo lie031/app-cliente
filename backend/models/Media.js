@@ -9,7 +9,8 @@ const SchemaMedia = new Schema({                        //Creamos un nuevo esque
     estreno: {type: Date, required: true},
     genero: {type: Schema.Types.ObjectId, ref:'Genero', required: true},
     director: {type: Schema.Types.ObjectId, ref:'Director', required: true},
-    productora: {type: Schema.Types.ObjectId, ref: 'Productora', required: true}
+    productora: {type: Schema.Types.ObjectId, ref: 'Productora', required: true},
+    tipo: {type: Schema.Types.ObjectId, ref: 'Tipo', required: true}
 },{timestamps: true});
 
 module.exports = model("Media",SchemaMedia);            //Exportamos el esquema para poder usarlo en otros archivos

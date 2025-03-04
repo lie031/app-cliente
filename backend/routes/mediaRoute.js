@@ -4,6 +4,7 @@ const Media = require('../models/Media');                       //Importamos las
 const Genero = require('../models/Genero');
 const Director = require('../models/Director');
 const Productora = require('../models/Productora');
+const Tipo = require('../models/Tipo');
 
 const router = Router();                                        //Iniciamos el Router para crear las Api
 
@@ -14,6 +15,7 @@ router.get('/', async (req, res) => {                           //Creamos el met
             .populate('genero','nombre')
             .populate('director','nombre')
             .populate('productora','nombre')
+            .populate('tipo','nombre')
         res.json(medias);
    } catch (error) {
         console.error(error);
@@ -33,6 +35,7 @@ router.post('/',                                                //Creamos el met
         check('genero',"El campo genero es requerido").not().isEmpty(),
         check('director',"El campo director es requerido").not().isEmpty(),
         check('productora',"El campo productora es requerido").not().isEmpty(),
+        check('tipo',"El Campo Tipo es requerido").not().isEmpty()
     ],
     async (req, res) => {
         try {
@@ -41,7 +44,7 @@ router.post('/',                                                //Creamos el met
             return res.status(400).json({errors: errors.array()});
         }
         
-        let {serial, titulo, sinopsis, url, img, estreno, genero, director, productora} = req.body; //Creamos instancias de cada atributo
+        let {serial, titulo, sinopsis, url, img, estreno, genero, director, productora, tipo} = req.body; //Creamos instancias de cada atributo
 
         estreno = new Date(estreno);                            //Asi actualizamos la fecha de estreno, pues esa es fijada
 
@@ -60,7 +63,13 @@ router.post('/',                                                //Creamos el met
         //Verificamos que el director exista y este activo
         const directorExist = await Director.findOne({_id: director, estado: "activo"});
         if (!directorExist) {
-            return res.status(400).json({error: "El director seleccionado no es valido o no esta activo"})
+            return res.status(400).json({error: "El director seleccionado no es valido o no esta activo"});
+        }
+
+        //Verificamos que el tipo exista
+        const tipoExist = await Tipo.findOne({_id: tipo});
+        if (!tipoExist) {
+            return res.status(400).json({error: "El tipo seleccionado no existe"});
         }
 
 
@@ -73,7 +82,8 @@ router.post('/',                                                //Creamos el met
             estreno,
             genero,
             director,
-            productora
+            productora,
+            tipo
         });
 
         await media.save();                                     //Esperamos a que la base de datos guarde el documento
@@ -121,6 +131,7 @@ router.put('/:id',                                               //Creamos el me
                     genero: req.body.genero,
                     director: req.body.director,
                     productora: req.body.productora,
+                    tipo: req.body.tipo
                 },
                 {new: true}                                      //Devuelve nuestra media actualizada
             );
