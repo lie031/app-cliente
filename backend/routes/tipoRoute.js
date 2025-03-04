@@ -1,4 +1,4 @@
-const Tipo = require('../models/Director')
+const Tipo = require('../models/Tipos')
 const validator = require('express-validator')
 
 const router = express.Router()
