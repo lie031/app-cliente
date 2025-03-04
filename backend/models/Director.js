@@ -13,6 +13,7 @@ const DirectorEsquema = mongoose.Schema(
       enum: ['activo', 'inactivo']
     }
   },
-  { timestamps: true })
+  { timestamps: true }
+)
 
 module.exports = mongoose.model('Director', DirectorEsquema)

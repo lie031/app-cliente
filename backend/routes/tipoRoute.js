@@ -1,32 +1,36 @@
-const express = require("express");
-const Tipo = require('../models/Tipo');
-const validator = require('express-validator');
+const express = require('express')
+const Tipo = require('../models/Tipo')
+const validator = require('express-validator')
 
-const router = express.Router();
+const router = express.Router()
 
-router.post('/', [
-  validator.check('nombre', 'nombre invalido').not().isEmpty(),
-  validator.check('descripcion', 'descripción invalida').not().isEmpty()
-], async (req, res) => {
-  try {
-    const errors = validator.validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: errors.array()
-      })
+router.post(
+  '/',
+  [
+    validator.check('nombre', 'nombre invalido').not().isEmpty(),
+    validator.check('descripcion', 'descripción invalida').not().isEmpty()
+  ],
+  async (req, res) => {
+    try {
+      const errors = validator.validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          message: errors.array()
+        })
+      }
+
+      let tipo = new Tipo()
+      tipo.nombre = req.body.nombre
+      tipo.descripcion = req.body.descripcion
+
+      tipo = await tipo.save()
+      res.send(tipo)
+    } catch (error) {
+      console.log(error)
+      res.status(500).send('error en el servidor')
     }
-
-    let tipo = new Tipo()
-    tipo.nombre = req.body.nombre
-    tipo.descripcion = req.body.descripcion
-
-    tipo = await tipo.save()
-    res.send(tipo)
-  } catch (error) {
-    console.log(error)
-    res.status(500).send('error en el servidor')
   }
-})
+)
 
 router.get('/', async (req, res) => {
   try {
@@ -48,34 +52,38 @@ router.get('/:nombre', async (req, res) => {
   }
 })
 
-router.put('/:nombre', [
-  validator.check('nombre', 'nombre invalido').not().isEmpty(),
-  validator.check('descricion', 'descripcion invalida').not().isEmpty()
-], async (req, res) => {
-  try {
-    const errors = validator.validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: errors.array()
-      })
-    }
+router.put(
+  '/:nombre',
+  [
+    validator.check('nombre', 'nombre invalido').not().isEmpty(),
+    validator.check('descricion', 'descripcion invalida').not().isEmpty()
+  ],
+  async (req, res) => {
+    try {
+      const errors = validator.validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          message: errors.array()
+        })
+      }
 
-    const tipo = await Tipo.findOneAndUpdate(
-      { nombre: req.params.nombre },
-      {
-        $set: {
-          nombre: req.body.nombre,
-          descripcion: req.body.descripcion
-        }
-      },
-      { new: true }
-    )
-    res.send(tipo)
-  } catch (error) {
-    console.log(error)
-    res.status(500).send('error en el servidor')
+      const tipo = await Tipo.findOneAndUpdate(
+        { nombre: req.params.nombre },
+        {
+          $set: {
+            nombre: req.body.nombre,
+            descripcion: req.body.descripcion
+          }
+        },
+        { new: true }
+      )
+      res.send(tipo)
+    } catch (error) {
+      console.log(error)
+      res.status(500).send('error en el servidor')
+    }
   }
-})
+)
 
 router.delete('/:nombre', async (req, res) => {
   try {
