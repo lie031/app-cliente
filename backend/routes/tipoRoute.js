@@ -64,8 +64,8 @@ router.put('/:id', [
       })
     }
 
-      const tipo = await Tipo.findOneAndUpdate(
-        { nombre: req.params.nombre },
+      const tipo = await Tipo.findByIdAndUpdate(
+        req.params.id,
         {
           $set: {
             nombre: req.body.nombre,
@@ -74,7 +74,7 @@ router.put('/:id', [
         },
         { new: true }
       )
-      res.send(tipo)
+      res.status(200).json(tipo);
     } catch (error) {
       console.log(error)
       res.status(500).send('error en el servidor')
@@ -84,8 +84,8 @@ router.put('/:id', [
 
 router.delete('/:id', async (req, res) => {
   try {
-    const tipo = await Tipo.findOneAndDelete({ nombre: req.params.nombre })
-    res.send(tipo)
+    await Tipo.findByIdAndDelete(req.params.id);
+    res.json({msg: "Tipo Eliminado Correctamente"});
   } catch (error) {
     console.log(error)
     res.status(500).send('error en el servidor')

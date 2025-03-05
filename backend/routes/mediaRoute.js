@@ -66,19 +66,19 @@ router.post(
       estreno = new Date(estreno) // Asi actualizamos la fecha de estreno, pues esa es fijada
 
         //Verificamos que el genero exista y este activo
-        const genderExist = await Genero.findOne({_id: genero, estado: 'activo'});
+        const genderExist = await Genero.findOne({_id: genero, estado: 'Activo'});
         if (!genderExist) {
-            return res.status(400).json({error: "El genero seleccionado no es valido o no esta activo"});
+            return res.status(400).json({error: "El genero seleccionado no es valido o no esta Activo"});
         }
 
         //Verificar si el produtor existe o esta activo
-        const productorExist = await Productora.findOne({_id: productora, estado: "Inactivo"});
+        const productorExist = await Productora.findOne({_id: productora, estado: "Activo"});
         if (!productorExist) {
             return res.status(400).json({error: "la Productora seleccionado no es valido o no esta activo"});
         }
 
         //Verificamos que el director exista y este activo
-        const directorExist = await Director.findOne({_id: director, estado: "activo"});
+        const directorExist = await Director.findOne({_id: director, estado: "Activo"});
         if (!directorExist) {
             return res.status(400).json({error: "El director seleccionado no es valido o no esta activo"});
         }
@@ -135,6 +135,23 @@ router.put(
       if (!errors.isEmpty()) {
         // Verificamos si hay errores
         return res.status(400).json({ errors: errors.array() })
+      }
+      //Verificamos que el genero exista y este activo
+      const genderExist = await Genero.findOne({_id: genero, estado: 'Activo'});
+      if (!genderExist) {
+          return res.status(400).json({error: "El genero seleccionado no es valido o no esta Activo"});
+      }
+
+      //Verificar si el produtor existe o esta activo
+      const productorExist = await Productora.findOne({_id: productora, estado: "Activo"});
+      if (!productorExist) {
+          return res.status(400).json({error: "la Productora seleccionado no es valido o no esta activo"});
+      }
+
+      //Verificamos que el director exista y este activo
+      const directorExist = await Director.findOne({_id: director, estado: "Activo"});
+      if (!directorExist) {
+          return res.status(400).json({error: "El director seleccionado no es valido o no esta activo"});
       }
 
             let media = await Media.findById(req.params.id);     //Creamos una variable que espere la busqueda de un elemento de la db
