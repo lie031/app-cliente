@@ -10,7 +10,7 @@ const GeneroEsquema = new mongoose.Schema(
     estado: {
       type: String,
       required: true,
-      enum: ['activo', 'inactivo']
+      enum: ['Activo', 'Inactivo']
     },
     descripcion: {
       type: String,

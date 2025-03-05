@@ -8,7 +8,7 @@ router.post(
   '/',
   [
     validator.check('nombre', 'nombre invalido').not().isEmpty(),
-    validator.check('estado', 'estado invalido').isIn(['activo', 'inactivo'])
+    validator.check('estado', 'estado invalido').isIn(['Activo', 'Inactivo'])
   ],
   async (req, res) => {
     try {
@@ -19,22 +19,32 @@ router.post(
         })
       }
 
-      let director = new Director()
-      director.nombre = req.body.nombre
-      director.estado = req.body.estado
+      const { nombre, estado } = req.body
+      if (!nombre || !estado) {
+        return res.status(400).send('Nombre y estado son requeridos')
+      }
 
+      let director = new Director({ nombre, estado })
       director = await director.save()
-      res.send(director)
+
+      if (!director) {
+        return res.status(500).send('Error al guardar el director')
+      }
+
+      res.status(201).send(director)
     } catch (error) {
-      console.log(error)
-      res.status(500).send('error en el servidor')
+      console.error(error)
+      res.status(500).send('Error en el servidor')
     }
   }
 )
 
 router.get('/', async (req, res) => {
   try {
-    const directores = await Director.find()
+    const directores = await Director.find().exec()
+    if (!directores) {
+      return res.status(404).send('No se encontraron directores')
+    }
     res.send(directores)
   } catch (error) {
     console.log(error)
@@ -42,9 +52,12 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:nombre', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const director = await Director.findOne({ nombre: req.params.nombre })
+    const director = await Director.findById(req.params.id)
+    if (!director) {
+      return res.status(404).send('Director no encontrado')
+    }
     res.send(director)
   } catch (error) {
     console.log(error)
@@ -53,10 +66,10 @@ router.get('/:nombre', async (req, res) => {
 })
 
 router.put(
-  '/:nombre',
+  '/:id',
   [
     validator.check('nombre', 'nombre invalido').not().isEmpty(),
-    validator.check('estado', 'estado invalido').isIn(['activo', 'inactivo'])
+    validator.check('estado', 'estado invalido').isIn(['Activo', 'Inactivo'])
   ],
   async (req, res) => {
     try {
@@ -67,8 +80,8 @@ router.put(
         })
       }
 
-      const director = await Director.findOneAndUpdate(
-        { nombre: req.params.nombre },
+      const director = await Director.findByIdAndUpdate(
+        req.params.id,
         {
           $set: {
             nombre: req.body.nombre,
@@ -77,6 +90,11 @@ router.put(
         },
         { new: true }
       )
+
+      if (!director) {
+        return res.status(404).send('Director no encontrado')
+      }
+
       res.send(director)
     } catch (error) {
       console.log(error)
@@ -85,11 +103,12 @@ router.put(
   }
 )
 
-router.delete('/:nombre', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const director = await Director.findOneAndDelete({
-      nombre: req.params.nombre
-    })
+    const director = await Director.findByIdAndDelete(req.params.id)
+    if (!director) {
+      return res.status(404).send('Director no encontrado')
+    }
     res.send(director)
   } catch (error) {
     console.log(error)

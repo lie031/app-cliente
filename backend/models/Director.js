@@ -10,7 +10,7 @@ const DirectorEsquema = mongoose.Schema(
     estado: {
       type: String,
       required: true,
-      enum: ['activo', 'inactivo']
+      enum: ['Activo', 'Inactivo']
     }
   },
   { timestamps: true }
