@@ -8,7 +8,7 @@ router.post(
   '/',
   [
     validator.check('nombre', 'nombre invalido').not().isEmpty(),
-    validator.check('estado', 'estado invalido').isIn(['activo', 'inactivo']),
+    validator.check('estado', 'estado invalido').isIn(['Activo', 'Inactivo']),
     validator.check('descripcion', 'descripcion invalida').not().isEmpty()
   ],
   async (req, res) => {
@@ -20,15 +20,24 @@ router.post(
         })
       }
 
-      let genero = new Genero()
-      genero.nombre = req.body.nombre
-      genero.estado = req.body.estado
-      genero.descripcion = req.body.descripcion
+      // Verificar que el genero no exista
+      const generoExist = await Genero.findOne({ nombre: req.body.nombre })
+      if (generoExist) {
+        return res.status(400).json({
+          message: 'El genero ya existe'
+        })
+      }
 
-      genero = await genero.save()
+      const genero = new Genero({
+        nombre: req.body.nombre,
+        estado: req.body.estado,
+        descripcion: req.body.descripcion
+      })
+
+      await genero.save()
       res.send(genero)
     } catch (error) {
-      console.log(error)
+      console.error(error)
       res.status(500).send('error en el servidor')
     }
   }
@@ -37,28 +46,34 @@ router.post(
 router.get('/', async (req, res) => {
   try {
     const generos = await Genero.find()
+    if (!generos) {
+      return res.status(404).send('Generos no encontrados')
+    }
     res.send(generos)
   } catch (error) {
-    console.log(error)
+    console.error(error)
     res.status(500).send('error en el servidor')
   }
 })
 
-router.get('/:nombre', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const genero = await Genero.findOne({ nombre: req.params.nombre })
+    const genero = await Genero.findById(req.params.id)
+    if (!genero) {
+      return res.status(404).send('Genero no encontrado')
+    }
     res.send(genero)
   } catch (error) {
-    console.log(error)
-    res.status(500).send('error en el servidor')
+    console.error(error)
+    res.status(500).send('Error en el servidor')
   }
 })
 
 router.put(
-  '/:nombre',
+  '/:id',
   [
     validator.check('nombre', 'nombre invalido').not().isEmpty(),
-    validator.check('estado', 'estado invalido').isIn(['activo', 'inactivo']),
+    validator.check('estado', 'estado invalido').isIn(['Activo', 'Inactivo']),
     validator.check('descripcion', 'descripcion invalida').not().isEmpty()
   ],
   async (req, res) => {
@@ -70,8 +85,8 @@ router.put(
         })
       }
 
-      const genero = await Genero.findOneAndUpdate(
-        { nombre: req.params.nombre },
+      const genero = await Genero.findByIdAndUpdate(
+        req.params.id,
         {
           $set: {
             nombre: req.body.nombre,
@@ -81,6 +96,9 @@ router.put(
         },
         { new: true }
       )
+      if (!genero) {
+        return res.status(404).send('Genero no encontrado')
+      }
       res.send(genero)
     } catch (error) {
       console.log(error)
@@ -89,13 +107,16 @@ router.put(
   }
 )
 
-router.delete('/:nombre', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const genero = await Genero.findOneAndDelete({ nombre: req.params.nombre })
+    const genero = await Genero.findByIdAndDelete(req.params.id)
+    if (!genero) {
+      return res.status(404).send('Genero no encontrado')
+    }
     res.send(genero)
   } catch (error) {
     console.log(error)
-    res.status(500).send('error en el servidor')
+    res.status(500).send('Error en el servidor')
   }
 })
 
