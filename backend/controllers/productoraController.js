@@ -31,7 +31,7 @@ exports.updateProductora = async (req, res) => {
     )
     res.json(actualizarProductora)
   } catch (error) {
-    res.status(400).json({ message: 'Error al actualizar la productora' }, error)
+    res.status(400).json({ message: 'Error al actualizar la productora', error })
   }
 }
 
@@ -41,6 +41,6 @@ exports.deleteProductora = async (req, res) => {
     await Productora.findByIdAndDelete(req.params.id)
     res.json({ message: 'Productora eliminada' })
   } catch (error) {
-    res.status(400).json({ message: 'Error al borrar la productora' }, error)
+    res.status(400).json({ message: 'Error al borrar la productora', error })
   }
 }
