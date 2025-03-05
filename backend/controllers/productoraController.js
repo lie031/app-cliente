@@ -34,7 +34,7 @@ exports.updateProductora = async (req, res) => {
         res.json(actualizarProductora);
     }
     catch (error) {
-        res.status(400).json({message: "Error al actualizar la productora"}, error);
+        res.status(400).json({error: "Error al actualizar la productora"});
     }
 }
 

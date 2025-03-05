@@ -50,7 +50,7 @@ router.get('/:nombre', async (req, res) => {
 
 router.put('/:nombre', [
   validator.check('nombre', 'nombre invalido').not().isEmpty(),
-  validator.check('descricion', 'descripcion invalida').not().isEmpty()
+  validator.check('descripcion', 'descripcion invalida').not().isEmpty()
 ], async (req, res) => {
   try {
     const errors = validator.validationResult(req)

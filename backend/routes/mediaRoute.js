@@ -55,7 +55,7 @@ router.post('/',                                                //Creamos el met
         }
 
         //Verificar si el produtor existe o esta activo
-        const productorExist = await Productora.findOne({_id: productora, estado: "Activo"});
+        const productorExist = await Productora.findOne({_id: productora, estado: "Inactivo"});
         if (!productorExist) {
             return res.status(400).json({error: "la Productora seleccionado no es valido o no esta activo"});
         }
@@ -131,7 +131,7 @@ router.put('/:id',                                               //Creamos el me
                     genero: req.body.genero,
                     director: req.body.director,
                     productora: req.body.productora,
-                    tipo: req.body.tipo
+                    tipo: req.body.tipo     
                 },
                 {new: true}                                      //Devuelve nuestra media actualizada
             );
