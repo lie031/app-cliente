@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:nombre', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const tipo = await Tipo.findOne({ nombre: req.params.nombre })
     res.send(tipo)
@@ -52,7 +52,7 @@ router.get('/:nombre', async (req, res) => {
   }
 })
 
-router.put('/:nombre', [
+router.put('/:id', [
   validator.check('nombre', 'nombre invalido').not().isEmpty(),
   validator.check('descripcion', 'descripcion invalida').not().isEmpty()
 ], async (req, res) => {
@@ -82,7 +82,7 @@ router.put('/:nombre', [
   }
 )
 
-router.delete('/:nombre', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const tipo = await Tipo.findOneAndDelete({ nombre: req.params.nombre })
     res.send(tipo)
