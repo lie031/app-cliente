@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const ProductoraSchema = new mongoose.Schema({
     nombre: {type: String, required: true, unique: true},
@@ -7,4 +7,4 @@ const ProductoraSchema = new mongoose.Schema({
     descripcion: {type: String, required: true}
 },{timestamps: true});
 
-module.exports = mongoose.model("Productora", ProductoraSchema);
+module.exports = mongoose.model('Productora', ProductoraSchema)

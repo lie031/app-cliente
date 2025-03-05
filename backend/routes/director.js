@@ -4,29 +4,33 @@ const validator = require('express-validator')
 
 const router = express.Router()
 
-router.post('/', [
-  validator.check('nombre', 'nombre invalido').not().isEmpty(),
-  validator.check('estado', 'estado invalido').isIn(['activo', 'inactivo'])
-], async (req, res) => {
-  try {
-    const errors = validator.validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: errors.array()
-      })
+router.post(
+  '/',
+  [
+    validator.check('nombre', 'nombre invalido').not().isEmpty(),
+    validator.check('estado', 'estado invalido').isIn(['activo', 'inactivo'])
+  ],
+  async (req, res) => {
+    try {
+      const errors = validator.validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          message: errors.array()
+        })
+      }
+
+      let director = new Director()
+      director.nombre = req.body.nombre
+      director.estado = req.body.estado
+
+      director = await director.save()
+      res.send(director)
+    } catch (error) {
+      console.log(error)
+      res.status(500).send('error en el servidor')
     }
-
-    let director = new Director()
-    director.nombre = req.body.nombre
-    director.estado = req.body.estado
-
-    director = await director.save()
-    res.send(director)
-  } catch (error) {
-    console.log(error)
-    res.status(500).send('error en el servidor')
   }
-})
+)
 
 router.get('/', async (req, res) => {
   try {
@@ -48,38 +52,44 @@ router.get('/:nombre', async (req, res) => {
   }
 })
 
-router.put('/:nombre', [
-  validator.check('nombre', 'nombre invalido').not().isEmpty(),
-  validator.check('estado', 'estado invalido').isIn(['activo', 'inactivo'])
-], async (req, res) => {
-  try {
-    const errors = validator.validationResult(req)
-    if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: errors.array()
-      })
-    }
+router.put(
+  '/:nombre',
+  [
+    validator.check('nombre', 'nombre invalido').not().isEmpty(),
+    validator.check('estado', 'estado invalido').isIn(['activo', 'inactivo'])
+  ],
+  async (req, res) => {
+    try {
+      const errors = validator.validationResult(req)
+      if (!errors.isEmpty()) {
+        return res.status(400).json({
+          message: errors.array()
+        })
+      }
 
-    const director = await Director.findOneAndUpdate(
-      { nombre: req.params.nombre },
-      {
-        $set: {
-          nombre: req.body.nombre,
-          estado: req.body.estado
-        }
-      },
-      { new: true }
-    )
-    res.send(director)
-  } catch (error) {
-    console.log(error)
-    res.status(500).send('error en el servidor')
+      const director = await Director.findOneAndUpdate(
+        { nombre: req.params.nombre },
+        {
+          $set: {
+            nombre: req.body.nombre,
+            estado: req.body.estado
+          }
+        },
+        { new: true }
+      )
+      res.send(director)
+    } catch (error) {
+      console.log(error)
+      res.status(500).send('error en el servidor')
+    }
   }
-})
+)
 
 router.delete('/:nombre', async (req, res) => {
   try {
-    const director = await Director.findOneAndDelete({ nombre: req.params.nombre })
+    const director = await Director.findOneAndDelete({
+      nombre: req.params.nombre
+    })
     res.send(director)
   } catch (error) {
     console.log(error)
