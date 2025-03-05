@@ -65,44 +65,23 @@ router.post(
 
       estreno = new Date(estreno) // Asi actualizamos la fecha de estreno, pues esa es fijada
 
-      // Verificamos que el genero exista y este activo
-      const genderExist = await Genero.findOne({
-        _id: genero,
-        estado: 'activo'
-      })
-      if (!genderExist) {
-        return res
-          .status(400)
-          .json({
-            error: 'El genero seleccionado no es valido o no esta activo'
-          })
-      }
+        //Verificamos que el genero exista y este activo
+        const genderExist = await Genero.findOne({_id: genero, estado: 'activo'});
+        if (!genderExist) {
+            return res.status(400).json({error: "El genero seleccionado no es valido o no esta activo"});
+        }
 
-      // Verificar si el produtor existe o esta activo
-      const productorExist = await Productora.findOne({
-        _id: productora,
-        estado: 'Activo'
-      })
-      if (!productorExist) {
-        return res
-          .status(400)
-          .json({
-            error: 'la Productora seleccionado no es valido o no esta activo'
-          })
-      }
+        //Verificar si el produtor existe o esta activo
+        const productorExist = await Productora.findOne({_id: productora, estado: "Inactivo"});
+        if (!productorExist) {
+            return res.status(400).json({error: "la Productora seleccionado no es valido o no esta activo"});
+        }
 
-      // Verificamos que el director exista y este activo
-      const directorExist = await Director.findOne({
-        _id: director,
-        estado: 'activo'
-      })
-      if (!directorExist) {
-        return res
-          .status(400)
-          .json({
-            error: 'El director seleccionado no es valido o no esta activo'
-          })
-      }
+        //Verificamos que el director exista y este activo
+        const directorExist = await Director.findOne({_id: director, estado: "activo"});
+        if (!directorExist) {
+            return res.status(400).json({error: "El director seleccionado no es valido o no esta activo"});
+        }
 
       // Verificamos que el tipo exista
       const tipoExist = await Tipo.findOne({ _id: tipo })
@@ -158,28 +137,26 @@ router.put(
         return res.status(400).json({ errors: errors.array() })
       }
 
-      let media = await Media.findById(req.params.id) // Creamos una variable que espere la busqueda de un elemento de la db
-      if (!media) {
-        return res.send('La Media no existe')
-      }
-
-      media = await Media.findByIdAndUpdate(
-        // Si la encuentra, esperamos los datos y los actualizamos con una funcion mas rapida
-        req.params.id,
-        {
-          serial: req.body.serial,
-          titulo: req.body.titulo,
-          sinopsis: req.body.sinopsis,
-          url: req.body.url,
-          img: req.body.img,
-          estreno: req.body.estreno,
-          genero: req.body.genero,
-          director: req.body.director,
-          productora: req.body.productora,
-          tipo: req.body.tipo
-        },
-        { new: true } // Devuelve nuestra media actualizada
-      )
+            let media = await Media.findById(req.params.id);     //Creamos una variable que espere la busqueda de un elemento de la db
+            if (!media) {
+                return res.send("La Media no existe");
+            }
+            
+            media = await Media.findByIdAndUpdate(               //Si la encuentra, esperamos los datos y los actualizamos con una funcion mas rapida
+                req.params.id,{
+                    serial: req.body.serial,
+                    titulo: req.body.titulo,
+                    sinopsis: req.body.sinopsis,
+                    url: req.body.url,
+                    img: req.body.img,
+                    estreno: req.body.estreno,
+                    genero: req.body.genero,
+                    director: req.body.director,
+                    productora: req.body.productora,
+                    tipo: req.body.tipo     
+                },
+                {new: true}                                      //Devuelve nuestra media actualizada
+            );
 
       res.json(media) // Devolvemos la media actualizada en formato json
     } catch (error) {

@@ -52,20 +52,17 @@ router.get('/:nombre', async (req, res) => {
   }
 })
 
-router.put(
-  '/:nombre',
-  [
-    validator.check('nombre', 'nombre invalido').not().isEmpty(),
-    validator.check('descricion', 'descripcion invalida').not().isEmpty()
-  ],
-  async (req, res) => {
-    try {
-      const errors = validator.validationResult(req)
-      if (!errors.isEmpty()) {
-        return res.status(400).json({
-          message: errors.array()
-        })
-      }
+router.put('/:nombre', [
+  validator.check('nombre', 'nombre invalido').not().isEmpty(),
+  validator.check('descripcion', 'descripcion invalida').not().isEmpty()
+], async (req, res) => {
+  try {
+    const errors = validator.validationResult(req)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: errors.array()
+      })
+    }
 
       const tipo = await Tipo.findOneAndUpdate(
         { nombre: req.params.nombre },
