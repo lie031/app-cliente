@@ -136,6 +136,14 @@ router.put(
         // Verificamos si hay errores
         return res.status(400).json({ errors: errors.array() })
       }
+
+      let {
+        genero,
+        productora,
+        director,
+        tipo
+      } = req.body
+
       //Verificamos que el genero exista y este activo
       const genderExist = await Genero.findOne({_id: genero, estado: 'Activo'});
       if (!genderExist) {
@@ -181,7 +189,7 @@ router.put(
       res.status(500).json({ error: 'Error al actualizar la Media' })
     }
   }
-)
+);
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 router.delete(
   '/:id', // Creamos un metodo delete con el argumento id pues necesitamos saber que elemento eliminar
