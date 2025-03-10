@@ -121,10 +121,7 @@ router.put(
     check('sinopsis', 'El campo sinopsis es requerido').not().isEmpty(),
     check('url', 'El campo url es requerido').not().isEmpty(),
     check('img', 'El campo img es requerido').not().isEmpty(),
-    check(
-      'estreno',
-      'El campo debe de tener una fecha valida (YYYY-MM-DD)'
-    ).isISO8601(),
+    check('estreno','El campo debe de tener una fecha valida (YYYY-MM-DD)').isISO8601(),
     check('genero', 'El campo genero es requerido').not().isEmpty(),
     check('director', 'El campo director es requerido').not().isEmpty(),
     check('productora', 'El campo productora es requerido').not().isEmpty()
