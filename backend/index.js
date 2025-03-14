@@ -1,10 +1,16 @@
 const express = require('express')
 const { obtenerConexion } = require('./db/connect-mongo')
+const cors = require('cors');
 
 const app = express()
-const puerto = 3000
+const puerto = process.env.PORT;
 
 obtenerConexion()
+
+app.use(cors({
+  origin: "http://localhost:3000",
+  methods: ["GET","POST","PUT","DELETE"]
+}));
 app.use(express.json())
 
 app.use('/generos', require('./routes/genero'))
