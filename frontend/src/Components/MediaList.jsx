@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from "react";
 import mediaService from "../Services/MediaService";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 
 
 /**
@@ -73,7 +74,9 @@ const MediaList = () => {
             {!loading && !error && (
                 <>
                 {medias.length > 0 ? (
+                    
                     <div className="table-responsive">
+                        <NavLink to="/create" className="btn btn-success mb-3">Crear Nueva Media</NavLink>
                         <table className="table table-striped table-bordered table-hover"> {/* media-table */}
                             <thead className="table-dark">
                                 <tr>
