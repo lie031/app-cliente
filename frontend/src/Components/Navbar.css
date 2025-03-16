@@ -1,7 +1,7 @@
 .navbar {
-    background-color: #333;
+    background-color: #343a40;
     color: white;
-    position: relative;
+    padding: 0.75rem 1rem;
 }
 
 .navbar-container {
@@ -16,6 +16,7 @@
 .navbar-logo {
     font-size: 1,5rem;
     font-weight: bold;
+    color: white;
 }
 
 .navbar-menu {
