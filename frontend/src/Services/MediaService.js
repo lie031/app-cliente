@@ -18,9 +18,12 @@ const mediaService = {
      */
     getAll: async () => {
         try {
+            //Almacenamos la respuesta de la base de datos con la solicitud get
             const response = await axiosInstance.get('/medias')
+            //Retornamos los datos obtenidos mediante la URL
             return response.data;
         } catch (error) {
+            //Imprimimos el Error obtenido 
             console.error("Error al obtener los usuarios: ", error);
             throw error;
         }
@@ -33,7 +36,9 @@ const mediaService = {
      */
     create: async (mediaData) => {
         try {
+            //Almacenamos el proceso que se hara en la base de datos mediante el metodo POST, utilizando el parametro mediaData para enviar los datos del objeto
             const response = await axiosInstance.post('/medias', mediaData);
+            //Retornamos los datos que se generan
             return response.data;
         } catch (error) {
             console.error("Error al crear la Media: ", error);
@@ -48,7 +53,14 @@ const mediaService = {
      */
     update: async (_id, mediaData) => {
         try {
+            /**
+             * Almacenaremos el proceso que se realizara a la base de datos mediante la URL con el metodo PUT
+             * Definimos el ID de la Media a actualizar
+             * Utilizamos el Parametro mediaData para Enviar los Datos que se usaran
+             */
             const response = await axiosInstance.put(`/medias/${_id}`,mediaData);
+
+            //Retornamos los datos que se crearon
             return response.data;
         } catch (error) {
             console.error("Error al actualizar la Media", error);
@@ -63,7 +75,13 @@ const mediaService = {
      */
     delete: async (_id) => {
         try {
+            /**
+             * Almacenamos el Proceso que se hara en la base de datos mediante la URL
+             * Utilizamos el ID como parametro para elegir que Media eliminar de la DB
+             */
             const response = await axiosInstance.delete(`/medias/${_id}`);
+            
+            //Retornamos los datos actualizados de la DB
             return response.data;
         } catch (error) {
             console.error("Error al eliminar la Media", error);
@@ -72,4 +90,5 @@ const mediaService = {
     }
 };
 
+//Exportamos el Servicio para poder utilizarlo en otros documentos
 export default mediaService;
