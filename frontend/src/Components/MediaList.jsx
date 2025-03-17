@@ -19,6 +19,9 @@ const MediaList = () => {
     //Estado para manejar errores
     const [error, setError] = useState(null);
 
+    //Manejo del Navigate
+    const navigate = useNavigate();
+
     //Efecto para cargar las medias cuando el componente se monta
     useEffect(() => {
 
@@ -43,6 +46,10 @@ const MediaList = () => {
         fetchMedias();
     },[]); //El array vacio asegura que esto solo se ejecute una vez al montar el componente
 
+    const editMedia = (id) => {
+        navigate(`/medias/${id}`);
+    }
+
     //Funcion para eliminar una Media
     const deleteMedia = async (id) => {
         if (window.confirm("¿Seguro que deseas eliminar la Media?")) {
@@ -65,7 +72,7 @@ const MediaList = () => {
             <h2 className="text-center">Lista de Medias</h2>
 
             {/* Mostrar mensaje de carga */}
-            {loading && <p>Cargando Usuarios...</p>}
+            {loading && <p>Cargando Medias...</p>}
 
             {/* Mostrar mensaje de error si existe */}
             {error && <div className="error-message">{error}</div>}
@@ -105,17 +112,17 @@ const MediaList = () => {
                                         <td><a href="{media.url}" target="_blank" rel="noopener noreferrer">Ver</a></td>
                                         <td><img src="{media.img}" alt={media.titulo} width="100"/></td>
                                         <td>{media.estreno}</td>
-                                        <td>{JSON.stringify(media.genero)}</td>
-                                        <td>{JSON.stringify(media.director)}</td>
-                                        <td>{JSON.stringify(media.produtora)}</td>
-                                        <td>{JSON.stringify(media.tipo)}</td>
+                                        <td>{media.genero?.nombre}</td>
+                                        <td>{media.director?.nombre}</td>
+                                        <td>{media.productora?.nombre}</td>
+                                        <td>{media.tipo?.nombre}</td>
                                         <td>{media.createdAt}</td>
                                         <td>{media.updatedAt}</td>
                                         <td>
                                             <button className="view-btn" onClick={() => alert(`ver detalles de media ${media._id}`)}>
                                                 Ver
                                             </button>
-                                            <button className="edit-btn" onClick={() => alert(`Editar Media ${media._id}`)}>
+                                            <button className="edit-btn" onClick={() => editMedia(media._id)}>
                                                 Editar
                                             </button>
                                             <button className="delete-btn" onClick={() => deleteMedia(media._id)}>

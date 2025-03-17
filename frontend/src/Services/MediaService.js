@@ -29,6 +29,16 @@ const mediaService = {
         }
     },
 
+    getById: async (_id) => {
+        try {
+            const response = await axiosInstance.get(`/medias/${_id}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error al Obtener la media con el id", error);
+            throw error;
+        }
+    },
+
     /**
      * 
      * @param {Object} mediaData - Datos de la media a crear 
