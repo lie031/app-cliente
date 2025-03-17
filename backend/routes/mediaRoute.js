@@ -24,6 +24,23 @@ router.get('/', async (req, res) => {
   }
 })
 
+router.get('/:id', async (req,res) => {
+  try {
+    const media = await Media.findById(req.params.id)
+    .populate('genero','nombre')
+    .populate('director', 'nombre')
+    .populate('productora', 'nombre')
+    .populate('tipo', 'nombre')
+    if (!media) {
+      return res.status(404).json({message: 'Media no Encontrada'});
+    }
+    res.json(media);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({error: 'Error al obtener la media por id'});
+  }  
+})
+
 // ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 router.post(
   '/', // Creamos el metodo post
