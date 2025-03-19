@@ -1,6 +1,6 @@
 import React, {use, useEffect, useState} from "react";
 import mediaService from "../Services/MediaService";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams,NavLink } from "react-router-dom";
 
 
 //Declaramos el componente funcional llamado CreateMedia
@@ -88,25 +88,47 @@ const MediaForm = () => {
 
     //Renderizamos el Componente
     return (
-        <div className="container">
-            <h2>{_id ? 'Editar Media' : 'Crear Media'}</h2>
-            <form onSubmit={handleSubmit}>
-                {Object.keys(formData).map((key) => (
-                    <div key={key} className="form-group mb-3">
-                        <label>{key}</label>
-                        <input type="text" 
-                        name={key} 
-                        value={ typeof formData[key] === "object" && formData[key] !== null
-                            ? formData[key]._id || ''
-                            : formData[key] || ''
-                        }
-                        onChange={handleChange}
-                        className="form-control"
-                        />
-                    </div>
-                ))}
-                <button type="submit" className="btn btn-primary">{_id ? 'Actualizar': 'Crear'}</button>
-            </form>
+        <div className="container my-4">
+
+            <div className="card shadow-lg">
+
+                <div className="card-header bg-primary text-white">
+                    <h2 className="text-center mb-0">{_id ? 'Editar Media' : 'Crear Media'}</h2>
+                </div>
+
+                <div className="card-body">
+
+                    <form onSubmit={handleSubmit}>
+                        <div className="row">
+                        {Object.keys(formData).map((key) => (
+                                <div key={key} className="col-md-6 mb-3">
+                                    <label className="form-label text-capitalize">{key}</label>
+                                    <input type="text" 
+                                    name={key} 
+                                    value={ typeof formData[key] === "object" && formData[key] !== null
+                                        ? formData[key]._id || ''
+                                        : formData[key] || ''
+                                    }
+                                    onChange={handleChange}
+                                    className="form-control"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                        <div className="d-flex justify-content-around ">
+                            
+                            <NavLink to={'/medias'} className="btn btn-danger w-50">Regresar</NavLink>
+                            
+                            <button type="submit" className="btn btn-success w-50">
+                                {_id ? 'Actualizar': 'Crear'}
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+           
         </div>
     );
 };
