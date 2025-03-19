@@ -81,10 +81,51 @@ const MediaList = () => {
             {!loading && !error && (
                 <>
                 {medias.length > 0 ? (
-                    
+
+                    <div className="container">
+                        <NavLink to={'/create'} className="btn btn-success mb-3">Crear Nueva Media</NavLink>
+                        <div className="row g-3">
+                            
+                            {medias.map(media => (
+                                <div className="col-md-3" key={media._id}>
+                                    <div 
+                                        className="card h-100 bg-light shadow-sm border-0"
+                                        style={{cursor: 'pointer', transition: 'transform 0.3s', boxShadow: '0.3s', width:'100%'}}
+                                        onClick={() => alert(`Detalle de Media: ${media._id}`)}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.transform = 'scale(1.05)';
+                                            e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.transform = 'scale(1)';
+                                            e.currentTarget.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                                        }}
+                                    >
+                                        <img className="card-img-top" src={media.img} alt={media.titulo} />
+                                        <div className="card-body">
+                                            <h5 className="card-tittle">{media.titulo}</h5>
+                                            <p className="card-text">{media.sinopsis}</p>
+                                        </div>
+                                        <ul className="list-group list-group-flush">
+                                            <li className="list-group-item">Estreno: {media.estreno}</li>
+                                            <li className="list-group-item">Genero: {media.genero?.nombre}</li>
+                                            <li className="list-group-item">Director: {media.director?.nombre}</li>
+                                            <li className="list-group-item">Productora: {media.productora?.nombre}</li>
+                                            <li className="list-group-item">Tipo: {media.tipo?.nombre}</li>
+                                        </ul>
+                                        <div className="card-body d-flex justify-content-around">
+                                            <button className="btn btn-warning me-2" onClick={(e) => {e.stopPropagation();  editMedia(media._id)}}>Editar</button>
+                                            <button className="btn btn-danger" onClick={(e) => {e.stopPropagation(); deleteMedia(media._id)}}>Eliminar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    /*
                     <div className="table-responsive">
                         <NavLink to="/create" className="btn btn-success mb-3">Crear Nueva Media</NavLink>
-                        <table className="table table-striped table-bordered table-hover"> {/* media-table */}
+                        <table className="table table-striped table-bordered table-hover"> 
                             <thead className="table-dark">
                                 <tr>
                                     <th>ID</th> 
@@ -133,14 +174,15 @@ const MediaList = () => {
                                 ))}
                             </tbody>
                         </table>
-                    </div>
+                    </div> 
+                    */
                 ) : (
                     <p>No hay Medias disponibles</p>
                 )}
                 </>
             )}
 
-        </div>
+        </div> 
     );
 
 };
