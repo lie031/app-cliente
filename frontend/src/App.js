@@ -3,14 +3,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import MediaList from './Components/MediaList';
 import MediaForm from './Components/MediaForm';
+import { TypeView } from './Components/tipo/TypeView';
 
 //Componentes para las otras paginas
 const Home = () => <div className='container'><h1>Pagina de Inicio</h1></div>
 
 
 function App() {
+
   return (
-    <BrowserRouter>
+    <BrowserRouter> 
       <div>
         <Navbar />
         <main className='container'>
@@ -19,6 +21,7 @@ function App() {
               <Route path='/medias' element ={<MediaList/>} />
               <Route path='/create' element ={<MediaForm/>} />
               <Route path='/medias/:_id' element = {<MediaForm />} />
+              <Route path='/tipos' element = {<TypeView />} />
           </Routes>
         </main>
     </div>
