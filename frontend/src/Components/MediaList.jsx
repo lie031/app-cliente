@@ -103,8 +103,8 @@ const MediaList = () => {
                                     >
                                         <img className="card-img-top" src={media.img} alt={media.titulo} />
                                         <div className="card-body">
-                                            <h5 className="card-tittle">{media.titulo}</h5>
-                                            <p className="card-text">{media.sinopsis}</p>
+                                            <h5 className="card-tittle">{media.nombre}</h5>
+                                            <p className="card-text">{media.descripcion}</p>
                                         </div>
                                         <ul className="list-group list-group-flush">
                                             <li className="list-group-item">Estreno: {media.estreno}</li>
