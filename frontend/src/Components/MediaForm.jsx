@@ -30,20 +30,28 @@ const MediaForm = () => {
     //Opciones para los Select
     const [generos, setGeneros] = useState([]);
     const [directores, setDirectores] = useState([]);
-    const [productotas, setProductoras] = useState([]);
+    const [productoras, setProductoras] = useState([]);
     const [tipos, setTipos] = useState([]);
 
     useEffect(() => {
         const cargarOpciones = async () => {
             try {
-                const [generosData, directoresData, productorasData, tiposData] = await Promise.all([
-                    
-                ])
-            } catch (error) {
                 
+                const tiposData = await mediaService.getTipos();
+                const generosData = await mediaService.getGeneros();
+                const directoresData = await mediaService.getDirectores();
+                const productorasData = await mediaService.getProductoras();
+                
+                setGeneros(generosData);
+                setDirectores(directoresData);
+                setProductoras(productorasData);
+                setTipos(tiposData);
+            } catch (error) {
+                console.error("Error al cargar las opciones");
             }
-        }
-    })
+        };
+        cargarOpciones();
+    },[])
 
     useEffect(() => {
         if (_id) {
@@ -58,11 +66,11 @@ const MediaForm = () => {
                         sinopsis: data.sinopsis || '',
                         url: data.url || '',
                         img: data.img || '',
-                        estreno: data.estreno || '',
-                        genero: data.genero || [],
-                        director: data.director || '',
-                        productora: data.productora || '',
-                        tipo: data.tipo || ''
+                        estreno: data.estreno ? new Date(data.estreno).toISOString().split("T")[0] : 0,
+                        genero: data.genero?._id || '',
+                        director: data.director?._id || '',
+                        productora: data.productora?._id || '',
+                        tipo: data.tipo?._id || ''
                         });
                     }
                 } catch (err) {
@@ -85,9 +93,24 @@ const MediaForm = () => {
     };
 
     //Creamos un Manejador de envio de formulario
-    const handleSubmit = async (e) => {
+    let handleSubmit = async (e) => {
         //Esto evitara que el formulario se recargue al enviarse
         e.preventDefault();
+
+        //Convierto los objetos a solo ID antes de enviar
+        const mediaToSend = {
+            serial: formData.serial,
+            titulo: formData.titulo,
+            sinopsis: formData.sinopsis,
+            url: formData.url,
+            img: formData.img,
+            estreno: new Date(formData.estreno).toISOString(),
+            genero: typeof formData.genero === "object" ? formData.genero._id : formData.genero,
+            director: typeof formData.director === "object" ? formData.director._id : formData.director,
+            productora: typeof formData.productora === "object" ? formData.productora._id : formData.productora,
+            tipo: typeof formData.tipo === "object" ? formData.tipo._id : formData.tipo,
+        };
+        console.log("Datos enviados al backend:", JSON.stringify(mediaToSend, null, 2));
 
         try {
             if (_id) {
@@ -100,11 +123,14 @@ const MediaForm = () => {
             navigate('/');
         } catch (err) {
             console.error("Error al Guardar la Media: ", err);
-            alert('Error al guardar la media');
+            alert('Error al guardar la media', err);
         }
     };
     
-   
+    console.log("Generos:", generos);
+    console.log("Directores:", directores);
+    console.log("Productoras:", productoras);
+    console.log("Tipos:", tipos);
     return (
         <div className="container my-4">
 
@@ -117,30 +143,69 @@ const MediaForm = () => {
                 <div className="card-body">
 
                     <form onSubmit={handleSubmit}>
+
                         <div className="row">
-                        {Object.keys(formData).map((key) => (
-                                <div key={key} className="col-md-6 mb-3">
-                                    <label className="form-label text-capitalize">{key}</label>
-                                    <input type="text" 
-                                    name={key} 
-                                    value={ typeof formData[key] === "object" && formData[key] !== null
-                                        ? formData[key]._id || ''
-                                        : formData[key] || ''
-                                    }
-                                    onChange={handleChange}
-                                    className="form-control"
-                                    />
-                                </div>
-                            ))}
+                            {Object.keys(formData).map((key) => {
+                                let inputType = "text";
+                                if (key === "estreno") inputType = "date";
+
+                                return(
+                                    <div key={key} className="col-md-6 mb-3">
+                                        <label className="form-label text-capitalize">{key}</label>
+                                        {["genero","director","productora","tipo"].includes(key) ? (
+                                            <select 
+                                            
+                                            name={key}
+                                            value={formData[key] || ""}
+                                            onChange={(e) => setFormData({...formData, [key]: e.target.value})}
+                                            className="form-control"
+                                            >
+                                                <option value="">Seleccione {key}</option>
+
+                                                {key === "tipo" && tipos.map((item) => (
+                                                    <option key={item._id} value={item._id}>
+                                                        {item.nombre}
+                                                    </option>
+                                                ))}
+
+                                                {key === "genero" && generos.map((item) => (
+                                                    <option key={item._id} value={item._id}>
+                                                        {item.nombre +" " + item.estado}
+                                                    </option>
+                                                ))}
+
+                                                {key === "director" && directores.map((item) => (
+                                                    <option key={item._id} value={item._id}>
+                                                        {item.nombre +" " + item.estado}
+                                                    </option>
+                                                ))}
+
+                                                {key === "productora" && productoras.map((item) =>(
+                                                    <option key={item._id} value={item._id}>
+                                                        {item.nombre +" " + item.estado}
+                                                    </option>
+                                                ) )}
+
+                                            </select>
+                                        ) : (
+                                            <input 
+                                                type={inputType} 
+                                                name={key} 
+                                                value={formData[key] || ""}
+                                                onChange={handleChange}
+                                                className="form-control" 
+                                                />
+                                        )}
+                                    </div>
+                                )
+                            })}
                         </div>
-                        <div className="d-flex justify-content-around ">
-                            
-                            <NavLink to={'/medias'} className="btn btn-danger w-50">Regresar</NavLink>
-                            
-                            <button type="submit" className="btn btn-success w-50">
-                                {_id ? 'Actualizar': 'Crear'}
-                            </button>
-                        </div>
+                            <div className="d-flex justify-content-around">
+                                <NavLink to={'/medias'} className="btn btn-danger w-50">Regresar</NavLink>
+                                <button type="submit" className="btn btn-success w-50">
+                                    {_id ? 'Actualizar' : 'Crear '}
+                                </button>
+                            </div>
                     </form>
 
                 </div>

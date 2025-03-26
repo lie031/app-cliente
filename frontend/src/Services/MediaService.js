@@ -97,8 +97,54 @@ const mediaService = {
             console.error("Error al eliminar la Media", error);
             throw error;
         }
+    },
+
+    getTipos: async () => {
+      try {
+        const response = await axiosInstance.get('/tipos');
+        console.log("Tipos Recibidos: ", response.data);
+        return response.data;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }  
+    },
+
+    getDirectores: async () => {
+        try {
+            const response = await axiosInstance.get('/directores');
+            console.log("Directores recibidos: ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+
+    getProductoras: async () => {
+        try {
+            const response = await axiosInstance.get('/productoras');
+            console.log("Productoras recibidas: ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+
+    getGeneros: async () => {
+        try {
+            const response = await axiosInstance.get('/generos');
+            console.log("Generos Recibidos: ", response.data);
+            return response.data;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
+
 };
+
 
 //Exportamos el Servicio para poder utilizarlo en otros documentos
 export default mediaService;
