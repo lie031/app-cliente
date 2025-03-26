@@ -20,6 +20,7 @@ const Navbar = () => {
      * Se ejecuta la funcion cuando el usuario hace click en el menu
      * Al darle click el estado se convierte a lo contrario de lo que este definido
      */
+<<<<<<< HEAD
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
@@ -63,6 +64,51 @@ const Navbar = () => {
       </div>
     </nav>
   )
+=======
+    const toggleMenu = () => {
+        setIsOpen(!isOpen);
+    };
+    //Renderizamos el Navbar
+    return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div className="container">
+                <Link to="/" className="navbar-brand">Mi App</Link>
+                <button 
+                    className="navbar-toggle"
+                    type="button"
+                    onClick={toggleMenu}
+                    aria-controls="navbarNav"
+                    aria-expanded={isOpen}
+                    aria-label="Toggle navigation"
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`} id="navbarNav">
+                    <ul className="navbar-nav ms-auto">
+                        <li className="nav-item">
+                            <Link to="/" className="nav-link">Inicio</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="#" className="nav-link">Directoras</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="#" className="nav-link">Generos</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/medias" className="nav-link">Medias</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/productoras" className="nav-link">Productoras</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/tipos" className="nav-link">Tipos</Link>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    )
+>>>>>>> 4c3768b4552d41597586e69aed9b3bb503d9dfae
 }
 
 export default Navbar
