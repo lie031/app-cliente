@@ -27,6 +27,24 @@ const MediaForm = () => {
         tipo: ''
     });
 
+    //Opciones para los Select
+    const [generos, setGeneros] = useState([]);
+    const [directores, setDirectores] = useState([]);
+    const [productotas, setProductoras] = useState([]);
+    const [tipos, setTipos] = useState([]);
+
+    useEffect(() => {
+        const cargarOpciones = async () => {
+            try {
+                const [generosData, directoresData, productorasData, tiposData] = await Promise.all([
+                    
+                ])
+            } catch (error) {
+                
+            }
+        }
+    })
+
     useEffect(() => {
         if (_id) {
             const cargarMedia = async () => {
@@ -85,8 +103,8 @@ const MediaForm = () => {
             alert('Error al guardar la media');
         }
     };
-
-    //Renderizamos el Componente
+    
+   
     return (
         <div className="container my-4">
 
@@ -131,6 +149,7 @@ const MediaForm = () => {
            
         </div>
     );
+ 
 };
 
 export default MediaForm;
