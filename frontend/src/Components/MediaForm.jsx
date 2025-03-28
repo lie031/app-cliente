@@ -170,19 +170,19 @@ const MediaForm = () => {
 
                                                 {key === "genero" && generos.map((item) => (
                                                     <option key={item._id} value={item._id}>
-                                                        {item.nombre +" " + item.estado}
+                                                        {item.nombre + " - " + item.estado}
                                                     </option>
                                                 ))}
 
                                                 {key === "director" && directores.map((item) => (
                                                     <option key={item._id} value={item._id}>
-                                                        {item.nombre +" " + item.estado}
+                                                        {item.nombre + " - " + item.estado}
                                                     </option>
                                                 ))}
 
                                                 {key === "productora" && productoras.map((item) =>(
                                                     <option key={item._id} value={item._id}>
-                                                        {item.nombre +" " + item.estado}
+                                                        {item.nombre + " - " + item.estado}
                                                     </option>
                                                 ) )}
 
