@@ -15,7 +15,7 @@ import GeneroForm from './Components/genero/GeneroForm'
 
 
 // Componentes para las otras paginas
-const Home = () => <div className='container'><h1>Pagina de Inicio</h1></div>
+//const Home = () => <div className='container'><h1>Pagina de Inicio</h1></div>
 
 function App () {
   return (
@@ -25,9 +25,8 @@ function App () {
         <main className='container'>
           <Routes>
 
-            <Route path='/' element={<Home />} />
-
-            <Route path='/medias' element={<MediaList />} />
+            <Route path='/' element={<MediaList />} />
+            
             <Route path='/create' element={<MediaForm />} />
             <Route path='/medias/:_id' element={<MediaForm />} />
             <Route path='/medias/detail/:_id' element={<MediaDetail/>} />

@@ -52,7 +52,7 @@ const MediaDetail = () => {
                             
                             <div className="d-flex justify-content-around">
                                 <a href={media.url} className="btn btn-danger mt-3" target="_blank" rel="noopener noreferrer">Ver Ahora</a>
-                                <NavLink to={'/medias'} className="btn btn-danger mt-3">Regresar</NavLink>
+                                <NavLink to={'/'} className="btn btn-danger mt-3">Regresar</NavLink>
                                 
                             </div>
                         </div>

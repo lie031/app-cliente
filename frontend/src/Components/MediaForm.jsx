@@ -201,7 +201,7 @@ const MediaForm = () => {
                             })}
                         </div>
                             <div className="d-flex justify-content-around">
-                                <NavLink to={'/medias'} className="btn btn-danger w-50">Regresar</NavLink>
+                                <NavLink to={'/'} className="btn btn-danger w-50">Regresar</NavLink>
                                 <button type="submit" className="btn btn-success w-50">
                                     {_id ? 'Actualizar' : 'Crear '}
                                 </button>
