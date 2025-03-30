@@ -4,7 +4,7 @@ import { useNavigate, useParams,NavLink } from "react-router-dom";
 
 export const TypeView = () => {
 
-    //Estado para almacenar la lista de medias
+    //Estado para almacenar la lista de tipos
     const [types, setTypes] = useState([]);
 
     //Estado para manejar la carga de datos
@@ -16,10 +16,10 @@ export const TypeView = () => {
     //Manejo del Navigate
     const navigate = useNavigate();
 
-    //Efecto para cargar las medias cuando el componente se monta
+    //Efecto para cargar los tipos cuando el componente se monta
     useEffect(() => {
 
-        //funcion para cargar las Medias
+        //funcion para cargar los tipos
         const fetchTypes = async () => {
             try {
                 setLoading(true);
@@ -44,13 +44,13 @@ export const TypeView = () => {
         navigate(`/tipos/${id}`);
     }
 
-    //Funcion para eliminar una Media
+    //Funcion para eliminar
     const deleteType = async (id) => {
         if (window.confirm("¿Seguro que deseas eliminar este tipo?")) {
             try {
                 await typeService.delete(id);
 
-                //Actualizamos la lista de Medias eliminando la media borrada
+                //Actualizamos la lista eliminando el tipo borrado
                 setTypes(types.filter(type => type._id !== id));
                 
                 alert('Tipo eliminado correctamente');

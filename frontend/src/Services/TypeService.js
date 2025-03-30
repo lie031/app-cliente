@@ -4,7 +4,7 @@ const typeService = {
 
     /**
      * Obtiene la lista de todos los usuarios
-     * @returns {promise} promesa que resuelve el array de medias
+     * @returns {promise} promesa que resuelve el array de tipos
      */
     getAll: async () => {
         try {
@@ -31,13 +31,13 @@ const typeService = {
 
     /**
      * 
-     * @param {Object} mediaData - Datos de la media a crear 
-     * @returns {Promise} Promesa que resuelve los datos de la media creada
+     * @param {Object} tipoData - Datos del tipo a crear 
+     * @returns {Promise} Promesa que resuelve los datos del tipo creado
      */
-    create: async (mediaData) => {
+    create: async (tipoData) => {
         try {
-            //Almacenamos el proceso que se hara en la base de datos mediante el metodo POST, utilizando el parametro mediaData para enviar los datos del objeto
-            const response = await axiosInstance.post('/tipos', mediaData);
+            //Almacenamos el proceso que se hara en la base de datos mediante el metodo POST, utilizando el parametro tipoData para enviar los datos del objeto
+            const response = await axiosInstance.post('/tipos', tipoData);
             //Retornamos los datos que se generan
             return response.data;
         } catch (error) {
@@ -47,18 +47,18 @@ const typeService = {
     },
     /**
      * 
-     * @param {string|number} id - ID de la media a Actualizar 
-     * @param {Object} mediaData - Nuevos datos de la media 
-     * @returns {Promise} Promesa que resuelve a los datos del usuario actualizado
+     * @param {string|number} id - ID del tipo a Actualizar 
+     * @param {Object} tipoData - Nuevos datos del tipo 
+     * @returns {Promise} Promesa que resuelve a los datos del tipo actualizado
      */
-    update: async (_id, mediaData) => {
+    update: async (_id, tipoData) => {
         try {
             /**
              * Almacenaremos el proceso que se realizara a la base de datos mediante la URL con el metodo PUT
-             * Definimos el ID de la Media a actualizar
-             * Utilizamos el Parametro mediaData para Enviar los Datos que se usaran
+             * Definimos el ID de la tipo a actualizar
+             * Utilizamos el Parametro tipoData para Enviar los Datos que se usaran
              */
-            const response = await axiosInstance.put(`/tipos/${_id}`,mediaData);
+            const response = await axiosInstance.put(`/tipos/${_id}`,tipoData);
 
             //Retornamos los datos que se crearon
             return response.data;
@@ -70,14 +70,14 @@ const typeService = {
 
     /**
      * 
-     * @param {string|number} id - ID de la media a eliminar
+     * @param {string|number} id - ID del tipo a eliminar
      * @returns {Promise} promesa que resuelve la respuesta del servidor
      */
     delete: async (_id) => {
         try {
             /**
              * Almacenamos el Proceso que se hara en la base de datos mediante la URL
-             * Utilizamos el ID como parametro para elegir que Media eliminar de la DB
+             * Utilizamos el ID como parametro para elegir que Tipo eliminar de la DB
              */
             const response = await axiosInstance.delete(`/tipos/${_id}`);
             

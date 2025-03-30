@@ -77,7 +77,7 @@ const TypeForm = () => {
             <div className="card shadow-lg">
 
                 <div className="card-header bg-primary text-white">
-                    <h2 className="text-center mb-0">{_id ? 'Editar Media' : 'Crear Media'}</h2>
+                    <h2 className="text-center mb-0">{_id ? 'Editar Tipo' : 'Crear Tipo'}</h2>
                 </div>
 
                 <div className="card-body">
