@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios'
 /**
  * Archivo de configuracion para la conexion con el backend
  * Axios nos proporciona una interfaz mas limpia y potente para realizar las peticiones HTTP
@@ -10,15 +10,14 @@ import axios from 'axios';
  */
 
 const axiosInstance = axios.create({
-    //URL base de la api
-    baseURL: 'http://localhost:4000',
-    //Tiempo maximo de espera para las peticiones (en milisegundos)
-    timeout: 10000,
-    //Headers comunes para todas las peticiones
-    headers: {
-        'Content-Type': 'application/json',
-    }
-});
+  // URL base de la api
+  baseURL: 'https://app-backend-4214.onrender.com',
+  // Tiempo maximo de espera para las peticiones (en milisegundos)
+  timeout: 10000,
+  // Headers comunes para todas las peticiones
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
 
-
-export default axiosInstance;
+export default axiosInstance
