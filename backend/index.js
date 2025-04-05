@@ -9,7 +9,7 @@ obtenerConexion()
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://mi-react-app.onrender.com'
+  'https://app-frontend-nes3.onrender.com'
 ]
 
 app.use(cors({
