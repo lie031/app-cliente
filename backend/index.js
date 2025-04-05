@@ -1,16 +1,21 @@
 const express = require('express')
 const { obtenerConexion } = require('./db/connect-mongo')
-const cors = require('cors');
+const cors = require('cors')
 
 const app = express()
-const puerto = process.env.PORT;
+const puerto = process.env.PORT
 
 obtenerConexion()
 
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://mi-react-app.onrender.com'
+]
+
 app.use(cors({
-  origin: "http://localhost:3000",
-  methods: ["GET","POST","PUT","DELETE"]
-}));
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+}))
 
 app.use(express.json())
 
