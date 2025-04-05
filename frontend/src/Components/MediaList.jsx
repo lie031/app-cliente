@@ -91,7 +91,7 @@ const MediaList = () => {
                                     <div 
                                         className="card h-100 bg-light shadow-sm border-0"
                                         style={{cursor: 'pointer', transition: 'transform 0.3s', boxShadow: '0.3s', width:'100%'}}
-                                        onClick={() => alert(`Detalle de Media: ${media._id}`)}
+                                        onClick={() => navigate(`/medias/detail/${media._id}`)}
                                         onMouseEnter={(e) => {
                                             e.currentTarget.style.transform = 'scale(1.05)';
                                             e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3)';

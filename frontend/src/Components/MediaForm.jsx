@@ -170,19 +170,19 @@ const MediaForm = () => {
 
                                                 {key === "genero" && generos.map((item) => (
                                                     <option key={item._id} value={item._id}>
-                                                        {item.nombre +" " + item.estado}
+                                                        {item.nombre + " - " + item.estado}
                                                     </option>
                                                 ))}
 
                                                 {key === "director" && directores.map((item) => (
                                                     <option key={item._id} value={item._id}>
-                                                        {item.nombre +" " + item.estado}
+                                                        {item.nombre + " - " + item.estado}
                                                     </option>
                                                 ))}
 
                                                 {key === "productora" && productoras.map((item) =>(
                                                     <option key={item._id} value={item._id}>
-                                                        {item.nombre +" " + item.estado}
+                                                        {item.nombre + " - " + item.estado}
                                                     </option>
                                                 ) )}
 
@@ -201,7 +201,7 @@ const MediaForm = () => {
                             })}
                         </div>
                             <div className="d-flex justify-content-around">
-                                <NavLink to={'/medias'} className="btn btn-danger w-50">Regresar</NavLink>
+                                <NavLink to={'/'} className="btn btn-danger w-50">Regresar</NavLink>
                                 <button type="submit" className="btn btn-success w-50">
                                     {_id ? 'Actualizar' : 'Crear '}
                                 </button>
