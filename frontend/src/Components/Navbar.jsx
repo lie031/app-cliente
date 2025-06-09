@@ -15,7 +15,7 @@ const Navbar = () => {
      * La funcion setIsOpen actualizara el estado
      */
   const [isOpen, setIsOpen] = useState(false)
-  const [isAuthenticated, logout] = useAuth()
+  const { isAuthenticated, logout } = useAuth()
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
