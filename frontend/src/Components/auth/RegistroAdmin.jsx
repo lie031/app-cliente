@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { registerAdmin } from '../../services/authService';
 
 const RegistroAdmin = () => {
     const [formData, setFormData] = useState({
@@ -12,7 +11,7 @@ const RegistroAdmin = () => {
     });
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { registerAdmin } = useAuth();
 
     const handleChange = (e) => {
         setFormData({
@@ -31,8 +30,7 @@ const RegistroAdmin = () => {
         }
 
         try {
-            const data = await registerAdmin(formData);
-            login(data.token);
+            await registerAdmin(formData);
             navigate('/');
         } catch (error) {
             setError(error.response?.data?.message || 'Error al registrar administrador');

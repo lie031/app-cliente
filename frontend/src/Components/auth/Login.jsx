@@ -1,46 +1,43 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import authService from '../../Services/AuthService';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 const Login = () => {
-    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: ''
-    });
-    const [error, setError] = useState('');
+    })
+    const [error, setError] = useState('')
+    const navigate = useNavigate()
+    const { login } = useAuth()
 
     const handleChange = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
-        });
-    };
+        })
+    }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault()
+        setError('')
+
         try {
-            await authService.login(formData);
-            navigate('/');
-        } catch (err) {
-            setError(err.response?.data?.msg || 'Error al iniciar sesión');
+            await login(formData)
+            navigate('/')
+        } catch (error) {
+            setError(error.response?.data?.message || 'Error al iniciar sesión')
         }
-    };
+    }
 
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
                 <div className="col-md-6">
-                    <div className="card shadow-lg">
-                        <div className="card-header bg-primary text-white">
-                            <h2 className="text-center mb-0">Iniciar Sesión</h2>
-                        </div>
+                    <div className="card">
                         <div className="card-body">
-                            {error && (
-                                <div className="alert alert-danger" role="alert">
-                                    {error}
-                                </div>
-                            )}
+                            <h2 className="card-title text-center mb-4">Iniciar Sesión</h2>
+                            {error && <div className="alert alert-danger">{error}</div>}
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="email" className="form-label">Email</label>
@@ -66,24 +63,16 @@ const Login = () => {
                                         required
                                     />
                                 </div>
-                                <div className="d-grid gap-2">
-                                    <button type="submit" className="btn btn-primary">
-                                        Iniciar Sesión
-                                    </button>
-                                </div>
+                                <button type="submit" className="btn btn-primary w-100">
+                                    Iniciar Sesión
+                                </button>
                             </form>
-                            <div className="mt-3 text-center">
-                                <p>
-                                    ¿No tienes una cuenta?{' '}
-                                    <Link to="/registro">Regístrate aquí</Link>
-                                </p>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Login; 
+export default Login 
