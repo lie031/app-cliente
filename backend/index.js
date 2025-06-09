@@ -21,7 +21,8 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
 }))
 
 app.use(express.json())
@@ -37,11 +38,11 @@ app.use((req, res, next) => {
 app.use('/api/auth', require('./routes/auth'))
 
 // Rutas protegidas
-app.use('/generos', require('./routes/genero'))
-app.use('/directores', require('./routes/director'))
-app.use('/medias', require('./routes/mediaRoute'))
-app.use('/productoras', require('./routes/productoraRoutes'))
-app.use('/tipos', require('./routes/tipoRoute'))
+app.use('/api/generos', require('./routes/genero'))
+app.use('/api/directores', require('./routes/director'))
+app.use('/api/medias', require('./routes/mediaRoute'))
+app.use('/api/productoras', require('./routes/productoraRoutes'))
+app.use('/api/tipos', require('./routes/tipoRoute'))
 
 // Middleware para manejo de errores
 app.use((err, req, res, next) => {
