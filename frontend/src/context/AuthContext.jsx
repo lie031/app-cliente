@@ -20,7 +20,12 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       getCurrentUser(token)
         .then(userData => {
-          console.log('Datos del usuario obtenidos:', userData)
+          console.log('Datos del usuario obtenidos (detallado):', {
+            userData,
+            rol: userData.rol,
+            tipo: typeof userData.rol,
+            esAdmin: userData.rol?.toUpperCase() === 'ADMIN'
+          })
           setUser(userData)
         })
         .catch(error => {
@@ -38,7 +43,13 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (credentials) => {
     try {
       const data = await login(credentials)
-      console.log('Datos de login:', data)
+      console.log('Datos de login (detallado):', {
+        data,
+        user: data.user,
+        rol: data.user?.rol,
+        tipo: typeof data.user?.rol,
+        esAdmin: data.user?.rol?.toUpperCase() === 'ADMIN'
+      })
       setUser(data.user)
       return data
     } catch (error) {
@@ -49,7 +60,13 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (userData) => {
     try {
       const data = await register(userData)
-      console.log('Datos de registro:', data)
+      console.log('Datos de registro (detallado):', {
+        data,
+        user: data.user,
+        rol: data.user?.rol,
+        tipo: typeof data.user?.rol,
+        esAdmin: data.user?.rol?.toUpperCase() === 'ADMIN'
+      })
       setUser(data.user)
       return data
     } catch (error) {
@@ -60,7 +77,13 @@ export const AuthProvider = ({ children }) => {
   const registerAdminUser = async (userData) => {
     try {
       const data = await registerAdmin(userData)
-      console.log('Datos de registro admin:', data)
+      console.log('Datos de registro admin (detallado):', {
+        data,
+        user: data.user,
+        rol: data.user?.rol,
+        tipo: typeof data.user?.rol,
+        esAdmin: data.user?.rol?.toUpperCase() === 'ADMIN'
+      })
       setUser(data.user)
       return data
     } catch (error) {
