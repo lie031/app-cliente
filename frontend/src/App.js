@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Navbar from './Components/Navbar'
 import MediaList from './Components/MediaList'
 import MediaForm from './Components/MediaForm'
@@ -12,6 +12,9 @@ import DirectorView from './Components/director/DirectorView'
 import DirectorForm from './Components/director/DirectorForm'
 import GeneroView from './Components/genero/GeneroView'
 import GeneroForm from './Components/genero/GeneroForm'
+import Login from './Components/auth/Login'
+import Registro from './Components/auth/Registro'
+import PrivateRoute from './Components/auth/PrivateRoute'
 
 
 // Componentes para las otras paginas
@@ -24,29 +27,109 @@ function App () {
         <Navbar />
         <main className='container'>
           <Routes>
+            {/* Rutas públicas */}
+            <Route path='/login' element={<Login />} />
+            <Route path='/registro' element={<Registro />} />
 
-            <Route path='/' element={<MediaList />} />
+            {/* Rutas protegidas */}
+            <Route path='/' element={
+              <PrivateRoute>
+                <MediaList />
+              </PrivateRoute>
+            } />
             
-            <Route path='/create' element={<MediaForm />} />
-            <Route path='/medias/:_id' element={<MediaForm />} />
-            <Route path='/medias/detail/:_id' element={<MediaDetail/>} />
+            <Route path='/create' element={
+              <PrivateRoute>
+                <MediaForm />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/medias/:_id' element={
+              <PrivateRoute>
+                <MediaForm />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/medias/detail/:_id' element={
+              <PrivateRoute>
+                <MediaDetail />
+              </PrivateRoute>
+            } />
 
-            <Route path='/tipos' element={<TypeView />} />
-            <Route path='/tipos/create' element={<TypeForm />} />
-            <Route path='/tipos/:_id' element={<TypeForm />} />
+            <Route path='/tipos' element={
+              <PrivateRoute>
+                <TypeView />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/tipos/create' element={
+              <PrivateRoute>
+                <TypeForm />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/tipos/:_id' element={
+              <PrivateRoute>
+                <TypeForm />
+              </PrivateRoute>
+            } />
 
-            <Route path='/productoras' element={<ProductoraList />} />
-            <Route path='/productoras/create' element={<ProductoraForm />} />
-            <Route path='/productoras/:_id' element={<ProductoraForm />} />
+            <Route path='/productoras' element={
+              <PrivateRoute>
+                <ProductoraList />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/productoras/create' element={
+              <PrivateRoute>
+                <ProductoraForm />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/productoras/:_id' element={
+              <PrivateRoute>
+                <ProductoraForm />
+              </PrivateRoute>
+            } />
 
-            <Route path='/directores' element={<DirectorView />} />
-            <Route path='/directores/create' element={<DirectorForm />} />
-            <Route path='/directores/:_id' element={<DirectorForm />} />
+            <Route path='/directores' element={
+              <PrivateRoute>
+                <DirectorView />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/directores/create' element={
+              <PrivateRoute>
+                <DirectorForm />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/directores/:_id' element={
+              <PrivateRoute>
+                <DirectorForm />
+              </PrivateRoute>
+            } />
 
-            <Route path='/generos' element={<GeneroView />} />
-            <Route path='/generos/create' element={<GeneroForm />} />
-            <Route path='/generos/:_id' element={<GeneroForm />} />
+            <Route path='/generos' element={
+              <PrivateRoute>
+                <GeneroView />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/generos/create' element={
+              <PrivateRoute>
+                <GeneroForm />
+              </PrivateRoute>
+            } />
+            
+            <Route path='/generos/:_id' element={
+              <PrivateRoute>
+                <GeneroForm />
+              </PrivateRoute>
+            } />
 
+            {/* Redirección por defecto */}
+            <Route path='*' element={<Navigate to='/' replace />} />
           </Routes>
         </main>
       </div>
