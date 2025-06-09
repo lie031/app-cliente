@@ -15,7 +15,7 @@ const Navbar = () => {
      * La funcion setIsOpen actualizara el estado
      */
   const [isOpen, setIsOpen] = useState(false)
-  const { isAuthenticated, logout } = useAuth()
+  const auth = useAuth()
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
@@ -37,7 +37,7 @@ const Navbar = () => {
   }, [])
 
   const handleLogout = () => {
-    logout()
+    auth.logout()
     setIsAuthenticated(false)
     setUser(null)
     navigate('/login')
@@ -68,7 +68,7 @@ const Navbar = () => {
         </button>
         <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id='navbarNav'>
           <ul className='navbar-nav me-auto'>
-            {isAuthenticated && (
+            {auth.isAuthenticated && (
               <>
                 <li className='nav-item'>
                   <Link to='/' className='nav-link'>Medias</Link>
@@ -89,7 +89,7 @@ const Navbar = () => {
             )}
           </ul>
           <ul className='navbar-nav'>
-            {!isAuthenticated ? (
+            {!auth.isAuthenticated ? (
               <>
                 <li className='nav-item'>
                   <Link to='/login' className='nav-link'>Iniciar Sesión</Link>
