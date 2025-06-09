@@ -18,7 +18,7 @@ const UsuarioSchema = new mongoose.Schema({
     rol: {
         type: String,
         enum: ['ADMIN', 'USER'],
-        default: 'USER'
+        default: 'ADMIN'
     },
     estado: {
         type: String,
