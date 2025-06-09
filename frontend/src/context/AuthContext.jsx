@@ -1,10 +1,14 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { login, register, registerAdmin, logout, getCurrentUser } from '../Services/AuthService'
 
-const AuthContext = createContext()
+const AuthContext = createContext(null)
 
 export const useAuth = () => {
-  return useContext(AuthContext)
+  const context = useContext(AuthContext)
+  if (!context) {
+    throw new Error('useAuth debe ser usado dentro de un AuthProvider')
+  }
+  return context
 }
 
 export const AuthProvider = ({ children }) => {
@@ -31,21 +35,33 @@ export const AuthProvider = ({ children }) => {
   }, [])
 
   const loginUser = async (credentials) => {
-    const data = await login(credentials)
-    setUser(data.user)
-    return data
+    try {
+      const data = await login(credentials)
+      setUser(data.user)
+      return data
+    } catch (error) {
+      throw error
+    }
   }
 
   const registerUser = async (userData) => {
-    const data = await register(userData)
-    setUser(data.user)
-    return data
+    try {
+      const data = await register(userData)
+      setUser(data.user)
+      return data
+    } catch (error) {
+      throw error
+    }
   }
 
   const registerAdminUser = async (userData) => {
-    const data = await registerAdmin(userData)
-    setUser(data.user)
-    return data
+    try {
+      const data = await registerAdmin(userData)
+      setUser(data.user)
+      return data
+    } catch (error) {
+      throw error
+    }
   }
 
   const logoutUser = () => {
@@ -63,9 +79,13 @@ export const AuthProvider = ({ children }) => {
     logout: logoutUser
   }
 
+  if (loading) {
+    return <div>Cargando...</div>
+  }
+
   return (
     <AuthContext.Provider value={value}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   )
 } 
