@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       getCurrentUser(token)
         .then(userData => {
+          console.log('Datos del usuario obtenidos:', userData)
           setUser(userData)
         })
         .catch(error => {
@@ -37,6 +38,7 @@ export const AuthProvider = ({ children }) => {
   const loginUser = async (credentials) => {
     try {
       const data = await login(credentials)
+      console.log('Datos de login:', data)
       setUser(data.user)
       return data
     } catch (error) {
@@ -47,6 +49,7 @@ export const AuthProvider = ({ children }) => {
   const registerUser = async (userData) => {
     try {
       const data = await register(userData)
+      console.log('Datos de registro:', data)
       setUser(data.user)
       return data
     } catch (error) {
@@ -57,6 +60,7 @@ export const AuthProvider = ({ children }) => {
   const registerAdminUser = async (userData) => {
     try {
       const data = await registerAdmin(userData)
+      console.log('Datos de registro admin:', data)
       setUser(data.user)
       return data
     } catch (error) {

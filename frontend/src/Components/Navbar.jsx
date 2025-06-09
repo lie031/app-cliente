@@ -11,6 +11,8 @@ const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth()
   const navigate = useNavigate()
 
+  console.log('Estado actual del usuario en Navbar:', { user, isAuthenticated })
+
   const handleLogout = () => {
     logout()
     navigate('/login')
@@ -39,7 +41,7 @@ const Navbar = () => {
                 <li className='nav-item'>
                   <Link to='/media' className='nav-link'>Medias</Link>
                 </li>
-                {user.role === 'admin' && (
+                {user && user.role === 'admin' && (
                   <>
                     <li className='nav-item'>
                       <Link to='/generos' className='nav-link'>Géneros</Link>
@@ -71,7 +73,7 @@ const Navbar = () => {
             ) : (
               <>
                 <li className='nav-item'>
-                  <span className='nav-link'>Bienvenido, {user.nombre}</span>
+                  <span className='nav-link'>Bienvenido, {user?.nombre} ({user?.role})</span>
                 </li>
                 <li className='nav-item'>
                   <button
