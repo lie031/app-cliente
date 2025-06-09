@@ -1,17 +1,26 @@
 const jwt = require('jsonwebtoken');
 
-const verificarToken = (req, res, next) => {
-    const token = req.header('x-auth-token');
-
-    if (!token) {
+module.exports = function(req, res, next) {
+    // Obtener el token del header
+    const authHeader = req.header('Authorization');
+    
+    if (!authHeader) {
         return res.status(401).json({ msg: 'No hay token, autorización denegada' });
     }
 
+    // Verificar si el token es Bearer
+    const parts = authHeader.split(' ');
+    if (parts.length !== 2 || parts[0] !== 'Bearer') {
+        return res.status(401).json({ msg: 'Formato de token inválido' });
+    }
+
+    const token = parts[1];
+
     try {
-        const cifrado = jwt.verify(token, process.env.JWT_SECRET);
-        req.usuario = cifrado.usuario;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.usuario = decoded.usuario;
         next();
-    } catch (error) {
+    } catch (err) {
         res.status(401).json({ msg: 'Token no válido' });
     }
 };
@@ -24,6 +33,6 @@ const verificarAdmin = (req, res, next) => {
 };
 
 module.exports = {
-    verificarToken,
+    verificarToken: module.exports,
     verificarAdmin
 }; 

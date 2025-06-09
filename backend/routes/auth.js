@@ -5,11 +5,11 @@ const { check, validationResult } = require('express-validator');
 const Usuario = require('../models/Usuario');
 const { verificarToken } = require('../middleware/auth');
 
-// @route   POST api/auth/registro
+// @route   POST api/auth/register
 // @desc    Registrar usuario
 // @access  Public
 router.post(
-    '/registro',
+    '/register',
     [
         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
         check('email', 'Por favor incluye un email válido').isEmail(),
@@ -51,7 +51,7 @@ router.post(
                 { expiresIn: '24h' },
                 (error, token) => {
                     if (error) throw error;
-                    res.json({ token });
+                    res.json({ token, user: usuario });
                 }
             );
         } catch (error) {
@@ -61,16 +61,15 @@ router.post(
     }
 );
 
-// @route   POST api/auth/registro-admin
+// @route   POST api/auth/register-admin
 // @desc    Registrar primer administrador
 // @access  Public
 router.post(
-    '/registro-admin',
+    '/register-admin',
     [
         check('nombre', 'El nombre es obligatorio').not().isEmpty(),
         check('email', 'Por favor incluye un email válido').isEmail(),
-        check('password', 'Por favor ingresa una contraseña con 6 o más caracteres').isLength({ min: 6 }),
-        check('codigoAdmin', 'Código de administrador inválido').equals(process.env.ADMIN_CODE || 'ADMIN123')
+        check('password', 'Por favor ingresa una contraseña con 6 o más caracteres').isLength({ min: 6 })
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -114,7 +113,7 @@ router.post(
                 { expiresIn: '24h' },
                 (error, token) => {
                     if (error) throw error;
-                    res.json({ token });
+                    res.json({ token, user: usuario });
                 }
             );
         } catch (error) {
@@ -171,7 +170,7 @@ router.post(
                 { expiresIn: '24h' },
                 (error, token) => {
                     if (error) throw error;
-                    res.json({ token });
+                    res.json({ token, user: usuario });
                 }
             );
         } catch (error) {
@@ -181,10 +180,10 @@ router.post(
     }
 );
 
-// @route   GET api/auth/usuario
+// @route   GET api/auth/me
 // @desc    Obtener usuario autenticado
 // @access  Private
-router.get('/usuario', verificarToken, async (req, res) => {
+router.get('/me', verificarToken, async (req, res) => {
     try {
         const usuario = await Usuario.findById(req.usuario.id).select('-password');
         res.json(usuario);
