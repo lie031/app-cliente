@@ -1,10 +1,14 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:3000/api'
+const API_URL = 'https://app-backend-4214.onrender.com/api'
+
+// Configuración global de axios
+axios.defaults.baseURL = API_URL
+axios.defaults.headers.common['Content-Type'] = 'application/json'
 
 export const login = async (credentials) => {
     try {
-        const response = await axios.post(`${API_URL}/auth/login`, credentials)
+        const response = await axios.post('/auth/login', credentials)
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
@@ -19,7 +23,7 @@ export const login = async (credentials) => {
 export const register = async (userData) => {
     try {
         console.log('Enviando datos de registro:', userData)
-        const response = await axios.post(`${API_URL}/auth/register`, userData)
+        const response = await axios.post('/auth/register', userData)
         console.log('Respuesta del servidor:', response.data)
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
@@ -35,7 +39,7 @@ export const register = async (userData) => {
 export const registerAdmin = async (userData) => {
     try {
         console.log('Enviando datos de registro de admin:', userData)
-        const response = await axios.post(`${API_URL}/auth/register-admin`, userData)
+        const response = await axios.post('/auth/register-admin', userData)
         console.log('Respuesta del servidor:', response.data)
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
@@ -55,7 +59,7 @@ export const logout = () => {
 
 export const getCurrentUser = async (token) => {
     try {
-        const response = await axios.get(`${API_URL}/auth/me`, {
+        const response = await axios.get('/auth/me', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
