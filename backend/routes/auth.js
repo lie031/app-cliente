@@ -61,6 +61,69 @@ router.post(
     }
 );
 
+// @route   POST api/auth/registro-admin
+// @desc    Registrar primer administrador
+// @access  Public
+router.post(
+    '/registro-admin',
+    [
+        check('nombre', 'El nombre es obligatorio').not().isEmpty(),
+        check('email', 'Por favor incluye un email válido').isEmail(),
+        check('password', 'Por favor ingresa una contraseña con 6 o más caracteres').isLength({ min: 6 }),
+        check('codigoAdmin', 'Código de administrador inválido').equals(process.env.ADMIN_CODE || 'ADMIN123')
+    ],
+    async (req, res) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { nombre, email, password } = req.body;
+
+        try {
+            // Verificar si ya existe un administrador
+            const adminExists = await Usuario.findOne({ rol: 'ADMIN' });
+            if (adminExists) {
+                return res.status(400).json({ msg: 'Ya existe un administrador en el sistema' });
+            }
+
+            let usuario = await Usuario.findOne({ email });
+            if (usuario) {
+                return res.status(400).json({ msg: 'El usuario ya existe' });
+            }
+
+            usuario = new Usuario({
+                nombre,
+                email,
+                password,
+                rol: 'ADMIN'
+            });
+
+            await usuario.save();
+
+            const payload = {
+                usuario: {
+                    id: usuario.id,
+                    rol: usuario.rol
+                }
+            };
+
+            jwt.sign(
+                payload,
+                process.env.JWT_SECRET,
+                { expiresIn: '24h' },
+                (error, token) => {
+                    if (error) throw error;
+                    res.json({ token });
+                }
+            );
+        } catch (error) {
+            console.error(error.message);
+            res.status(500).send('Error en el servidor');
+        }
+    }
+);
+
 // @route   POST api/auth/login
 // @desc    Autenticar usuario y obtener token
 // @access  Public

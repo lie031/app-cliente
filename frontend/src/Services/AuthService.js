@@ -1,59 +1,77 @@
-import axiosInstance from './api';
+import axios from 'axios'
 
-const authService = {
-    login: async (credentials) => {
-        try {
-            const response = await axiosInstance.post('/api/auth/login', credentials);
-            if (response.data.token) {
-                localStorage.setItem('token', response.data.token);
-                axiosInstance.defaults.headers.common['x-auth-token'] = response.data.token;
-            }
-            return response.data;
-        } catch (error) {
-            console.error('Error en login:', error.response?.data || error.message);
-            throw error.response?.data || { msg: 'Error al iniciar sesión' };
+const API_URL = 'http://localhost:3000/api'
+
+export const login = async (credentials) => {
+    try {
+        const response = await axios.post(`${API_URL}/auth/login`, credentials)
+        if (response.data.token) {
+            localStorage.setItem('token', response.data.token)
+            axios.defaults.headers.common['x-auth-token'] = response.data.token
         }
-    },
-
-    registro: async (userData) => {
-        try {
-            console.log('Enviando datos de registro:', userData);
-            const response = await axiosInstance.post('/api/auth/registro', userData);
-            console.log('Respuesta del servidor:', response.data);
-            if (response.data.token) {
-                localStorage.setItem('token', response.data.token);
-                axiosInstance.defaults.headers.common['x-auth-token'] = response.data.token;
-            }
-            return response.data;
-        } catch (error) {
-            console.error('Error en registro:', error.response?.data || error.message);
-            throw error.response?.data || { msg: 'Error al registrar usuario' };
-        }
-    },
-
-    logout: () => {
-        localStorage.removeItem('token');
-        delete axiosInstance.defaults.headers.common['x-auth-token'];
-    },
-
-    getCurrentUser: async () => {
-        try {
-            const response = await axiosInstance.get('/api/auth/usuario');
-            return response.data;
-        } catch (error) {
-            console.error('Error al obtener usuario actual:', error.response?.data || error.message);
-            throw error.response?.data || { msg: 'Error al obtener información del usuario' };
-        }
-    },
-
-    isAuthenticated: () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            axiosInstance.defaults.headers.common['x-auth-token'] = token;
-            return true;
-        }
-        return false;
+        return response.data
+    } catch (error) {
+        console.error('Error en login:', error.response?.data || error.message)
+        throw error.response?.data || { msg: 'Error al iniciar sesión' }
     }
-};
+}
 
-export default authService; 
+export const register = async (userData) => {
+    try {
+        console.log('Enviando datos de registro:', userData)
+        const response = await axios.post(`${API_URL}/auth/register`, userData)
+        console.log('Respuesta del servidor:', response.data)
+        if (response.data.token) {
+            localStorage.setItem('token', response.data.token)
+            axios.defaults.headers.common['x-auth-token'] = response.data.token
+        }
+        return response.data
+    } catch (error) {
+        console.error('Error en registro:', error.response?.data || error.message)
+        throw error.response?.data || { msg: 'Error al registrar usuario' }
+    }
+}
+
+export const registerAdmin = async (userData) => {
+    try {
+        console.log('Enviando datos de registro de admin:', userData)
+        const response = await axios.post(`${API_URL}/auth/register-admin`, userData)
+        console.log('Respuesta del servidor:', response.data)
+        if (response.data.token) {
+            localStorage.setItem('token', response.data.token)
+            axios.defaults.headers.common['x-auth-token'] = response.data.token
+        }
+        return response.data
+    } catch (error) {
+        console.error('Error en registro de admin:', error.response?.data || error.message)
+        throw error.response?.data || { msg: 'Error al registrar administrador' }
+    }
+}
+
+export const logout = () => {
+    localStorage.removeItem('token')
+    delete axios.defaults.headers.common['x-auth-token']
+}
+
+export const getCurrentUser = async (token) => {
+    try {
+        const response = await axios.get(`${API_URL}/auth/me`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        return response.data
+    } catch (error) {
+        console.error('Error al obtener usuario actual:', error.response?.data || error.message)
+        throw error.response?.data || { msg: 'Error al obtener información del usuario' }
+    }
+}
+
+export const isAuthenticated = () => {
+    const token = localStorage.getItem('token')
+    if (token) {
+        axios.defaults.headers.common['x-auth-token'] = token
+        return true
+    }
+    return false
+} 

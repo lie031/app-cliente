@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react' // Importamos un Hook que nos permite manejar el estado de un 'Componente'
 import { Link, useNavigate } from 'react-router-dom'
 import './Navbar.css'
-import authService from '../Services/AuthService'
+import { useAuth } from '../context/AuthContext'
 
 /**
  * Asi Podremos manejar el Menu Movil
@@ -15,7 +15,7 @@ const Navbar = () => {
      * La funcion setIsOpen actualizara el estado
      */
   const [isOpen, setIsOpen] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, logout] = useAuth()
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
@@ -37,7 +37,7 @@ const Navbar = () => {
   }, [])
 
   const handleLogout = () => {
-    authService.logout()
+    logout()
     setIsAuthenticated(false)
     setUser(null)
     navigate('/login')
@@ -55,7 +55,7 @@ const Navbar = () => {
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
       <div className='container'>
-        <Link to='/' className='navbar-brand'>Mi App</Link>
+        <Link to='/' className='navbar-brand'>Media App</Link>
         <button
           className='navbar-toggle'
           type='button'
@@ -71,25 +71,37 @@ const Navbar = () => {
             {isAuthenticated && (
               <>
                 <li className='nav-item'>
-                  <Link to='/' className='nav-link'>Inicio</Link>
+                  <Link to='/' className='nav-link'>Medias</Link>
                 </li>
                 <li className='nav-item'>
-                  <Link to='/directores' className='nav-link'>Directores</Link>
-                </li>
-                <li className='nav-item'>
-                  <Link to='/generos' className='nav-link'>Generos</Link>
+                  <Link to='/tipos' className='nav-link'>Tipos</Link>
                 </li>
                 <li className='nav-item'>
                   <Link to='/productoras' className='nav-link'>Productoras</Link>
                 </li>
                 <li className='nav-item'>
-                  <Link to='/tipos' className='nav-link'>Tipos</Link>
+                  <Link to='/directores' className='nav-link'>Directores</Link>
+                </li>
+                <li className='nav-item'>
+                  <Link to='/generos' className='nav-link'>Géneros</Link>
                 </li>
               </>
             )}
           </ul>
           <ul className='navbar-nav'>
-            {isAuthenticated ? (
+            {!isAuthenticated ? (
+              <>
+                <li className='nav-item'>
+                  <Link to='/login' className='nav-link'>Iniciar Sesión</Link>
+                </li>
+                <li className='nav-item'>
+                  <Link to='/registro' className='nav-link'>Registro</Link>
+                </li>
+                <li className='nav-item'>
+                  <Link to='/registro-admin' className='nav-link'>Registro Admin</Link>
+                </li>
+              </>
+            ) : (
               <>
                 <li className='nav-item'>
                   <span className='nav-link'>Bienvenido, {user?.nombre}</span>
@@ -98,15 +110,6 @@ const Navbar = () => {
                   <button onClick={handleLogout} className='btn btn-link nav-link'>
                     Cerrar Sesión
                   </button>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className='nav-item'>
-                  <Link to='/login' className='nav-link'>Iniciar Sesión</Link>
-                </li>
-                <li className='nav-item'>
-                  <Link to='/registro' className='nav-link'>Registrarse</Link>
                 </li>
               </>
             )}

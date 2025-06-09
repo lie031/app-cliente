@@ -14,6 +14,7 @@ import GeneroView from './Components/genero/GeneroView'
 import GeneroForm from './Components/genero/GeneroForm'
 import Login from './Components/auth/Login'
 import Registro from './Components/auth/Registro'
+import RegistroAdmin from './Components/auth/RegistroAdmin'
 import PrivateRoute from './Components/auth/PrivateRoute'
 
 
@@ -30,6 +31,7 @@ function App () {
             {/* Rutas públicas */}
             <Route path='/login' element={<Login />} />
             <Route path='/registro' element={<Registro />} />
+            <Route path='/registro-admin' element={<RegistroAdmin />} />
 
             {/* Rutas protegidas */}
             <Route path='/' element={
