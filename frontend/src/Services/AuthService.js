@@ -7,7 +7,7 @@ export const login = async (credentials) => {
         const response = await axios.post(`${API_URL}/auth/login`, credentials)
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
-            axios.defaults.headers.common['x-auth-token'] = response.data.token
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
         }
         return response.data
     } catch (error) {
@@ -23,7 +23,7 @@ export const register = async (userData) => {
         console.log('Respuesta del servidor:', response.data)
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
-            axios.defaults.headers.common['x-auth-token'] = response.data.token
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
         }
         return response.data
     } catch (error) {
@@ -39,7 +39,7 @@ export const registerAdmin = async (userData) => {
         console.log('Respuesta del servidor:', response.data)
         if (response.data.token) {
             localStorage.setItem('token', response.data.token)
-            axios.defaults.headers.common['x-auth-token'] = response.data.token
+            axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
         }
         return response.data
     } catch (error) {
@@ -50,7 +50,7 @@ export const registerAdmin = async (userData) => {
 
 export const logout = () => {
     localStorage.removeItem('token')
-    delete axios.defaults.headers.common['x-auth-token']
+    delete axios.defaults.headers.common['Authorization']
 }
 
 export const getCurrentUser = async (token) => {
@@ -70,7 +70,7 @@ export const getCurrentUser = async (token) => {
 export const isAuthenticated = () => {
     const token = localStorage.getItem('token')
     if (token) {
-        axios.defaults.headers.common['x-auth-token'] = token
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
         return true
     }
     return false

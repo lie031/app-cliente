@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react' // Importamos un Hook que nos permite manejar el estado de un 'Componente'
+import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import './Navbar.css'
 import { useAuth } from '../context/AuthContext'
@@ -8,65 +8,31 @@ import { useAuth } from '../context/AuthContext'
  * Definimos el Componente Navbar utilizando una funcion flecha
  */
 const Navbar = () => {
-  /**
-     * Aqui Utilizamos el Hook useState para manejar el estado de Visibilidad del menu
-     * useState inicializa el estado con valor false, lo que significaria que el menu esta cerrado al principio
-     * El estao isOpen almacena el valor si el estado esta abierto (true) o cerrado (false)
-     * La funcion setIsOpen actualizara el estado
-     */
-  const [isOpen, setIsOpen] = useState(false)
   const auth = useAuth()
-  const [user, setUser] = useState(null)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      const auth = authService.isAuthenticated()
-      setIsAuthenticated(auth)
-      if (auth) {
-        try {
-          const userData = await authService.getCurrentUser()
-          setUser(userData)
-        } catch (error) {
-          console.error('Error al obtener usuario:', error)
-          handleLogout()
-        }
-      }
-    }
-    checkAuth()
-  }, [])
 
   const handleLogout = () => {
     auth.logout()
-    setIsAuthenticated(false)
-    setUser(null)
     navigate('/login')
   }
 
-  /**
-     * Creamos la Funcion ToogleMenu
-     * Se ejecuta la funcion cuando el usuario hace click en el menu
-     * Al darle click el estado se convierte a lo contrario de lo que este definido
-     */
-  const toggleMenu = () => {
-    setIsOpen(!isOpen)
-  }
   // Renderizamos el Navbar
   return (
     <nav className='navbar navbar-expand-lg navbar-dark bg-dark'>
       <div className='container'>
         <Link to='/' className='navbar-brand'>Media App</Link>
         <button
-          className='navbar-toggle'
+          className='navbar-toggler'
           type='button'
-          onClick={toggleMenu}
+          data-bs-toggle='collapse'
+          data-bs-target='#navbarNav'
           aria-controls='navbarNav'
-          aria-expanded={isOpen}
+          aria-expanded='false'
           aria-label='Toggle navigation'
         >
           <span className='navbar-toggler-icon' />
         </button>
-        <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id='navbarNav'>
+        <div className='collapse navbar-collapse' id='navbarNav'>
           <ul className='navbar-nav me-auto'>
             {auth.isAuthenticated && (
               <>
@@ -102,16 +68,14 @@ const Navbar = () => {
                 </li>
               </>
             ) : (
-              <>
-                <li className='nav-item'>
-                  <span className='nav-link'>Bienvenido, {user?.nombre}</span>
-                </li>
-                <li className='nav-item'>
-                  <button onClick={handleLogout} className='btn btn-link nav-link'>
-                    Cerrar Sesión
-                  </button>
-                </li>
-              </>
+              <li className='nav-item'>
+                <button
+                  className='nav-link btn btn-link'
+                  onClick={handleLogout}
+                >
+                  Cerrar Sesión
+                </button>
+              </li>
             )}
           </ul>
         </div>
