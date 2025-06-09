@@ -20,7 +20,8 @@
     "mongoose": "^8.13.0",
     "monqoose": "^0.0.4",
     "react-router-dom": "^7.4.0",
-    "jsonwebtoken": "^9.0.2"
-   
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3",
+    "bcrypt": "^5.1.1"
   }
 }
