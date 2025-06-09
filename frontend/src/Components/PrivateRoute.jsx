@@ -9,12 +9,12 @@ const PrivateRoute = ({ children, requireAdmin = false }) => {
   }
 
   // Si la ruta requiere admin y el usuario no es admin, redirigir a /media
-  if (requireAdmin && user.role !== 'admin') {
+  if (requireAdmin && user.rol?.toUpperCase() !== 'ADMIN') {
     return <Navigate to="/media" />
   }
 
   // Si el usuario es normal y no está en /media, redirigir a /media
-  if (user.role !== 'admin' && window.location.pathname !== '/media') {
+  if (user.rol?.toUpperCase() !== 'ADMIN' && window.location.pathname !== '/media') {
     return <Navigate to="/media" />
   }
 

@@ -41,7 +41,7 @@ const Navbar = () => {
                 <li className='nav-item'>
                   <Link to='/media' className='nav-link'>Medias</Link>
                 </li>
-                {user && user.role === 'admin' && (
+                {user && user.rol?.toUpperCase() === 'ADMIN' && (
                   <>
                     <li className='nav-item'>
                       <Link to='/generos' className='nav-link'>Géneros</Link>
@@ -73,7 +73,7 @@ const Navbar = () => {
             ) : (
               <>
                 <li className='nav-item'>
-                  <span className='nav-link'>Bienvenido, {user?.nombre} ({user?.role})</span>
+                  <span className='nav-link'>Bienvenido, {user?.nombre} ({user?.rol})</span>
                 </li>
                 <li className='nav-item'>
                   <button
