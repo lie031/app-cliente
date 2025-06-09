@@ -11,7 +11,7 @@ import axios from 'axios'
 
 const axiosInstance = axios.create({
   // URL base de la api
-  baseURL: 'https://app-backend-4214.onrender.com',
+  baseURL: 'https://app-backend-4214.onrender.com/api',
   // Tiempo maximo de espera para las peticiones (en milisegundos)
   timeout: 10000,
   // Headers comunes para todas las peticiones
