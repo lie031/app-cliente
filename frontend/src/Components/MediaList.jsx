@@ -71,6 +71,8 @@ const MediaList = () => {
         <div className="container mt-4"> {/* media-list-container*/}
             <h2 className="text-center">Lista de Medias</h2>
 
+            <NavLink to={'/create'} className="btn btn-success mb-3">Crear Nueva Media</NavLink>
+
             {/* Mostrar mensaje de carga */}
             {loading && <p>Cargando Medias...</p>}
 
@@ -83,7 +85,6 @@ const MediaList = () => {
                 {medias.length > 0 ? (
 
                     <div className="container">
-                        <NavLink to={'/create'} className="btn btn-success mb-3">Crear Nueva Media</NavLink>
                         <div className="row g-3">
                             
                             {medias.map(media => (
