@@ -65,7 +65,7 @@ export const TypeView = () => {
         <div className="container mt-4"> {/* media-list-container*/}
             <h2 className="text-center">Lista de tipos</h2>
             
-            <NavLink to={'/tipos/create'} className="btn btn-success mb-3">Crear Nuevo Tipo</NavLink
+            <NavLink to={'/tipos/create'} className="btn btn-success mb-3">Crear Nuevo Tipo</NavLink>
         
             {/* Mostrar mensaje de carga */}
             {loading && <p>Cargando Tipos...</p>}
